@@ -25,6 +25,9 @@ SystemMessage(['Initializing ' char(system.Type)]);
 
 % Turn off the controls until a subject is registered.
 ControlEnable(false);
+disp("Initializing app...")
+disp(system);
+disp(system.Type);
 app.SystemType=system.Type;
 
 app.Device=NIRSinstrument(app.SystemType);

@@ -56,6 +56,8 @@ classdef NIRSinstrument
        
        function obj=set.type(obj,type)
            type=upper(type);
+           disp("Type in NIRSInstrument")
+           disp(type);
            if(strcmp(type,'SIMULATOR'))
                obj.device=Simulator;
            elseif(strcmp(type,'BTNIRS'))

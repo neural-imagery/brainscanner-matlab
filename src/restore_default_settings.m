@@ -3,19 +3,30 @@ function system = restore_default_settings(type)
 % behavior
 % save('System.config','system','-MAT')
 
-
+disp("Nargin")
+disp(nargin);
 if(nargin==1)
-    system.Type=type;
-else
-    system.Type = "BTNIRS";
+    disp("Setting type as...");
+    disp(type);
+%     system.Type=type;
 end
+% else
+system.Type = "SIMULATOR";
+% end
+disp("System type in default")
+disp(system.Type);
 
-datafolder='BTNIRS_Data';
+datafolder = [system.Type '_Data'];
+projectRoot = fileparts(mfilename('fullpath'));
+
 if(ismac | isunix)
-    system.Folders.DefaultData = ['/Users/' getenv('USER') '/Desktop/' datafolder];
+    system.Folders.DefaultData = [projectRoot '/../' datafolder];
 else
-    system.Folders.DefaultData = [getenv('UserProfile') '\Desktop\' datafolder];
+    system.Folders.DefaultData = [projectRoot '\..\' datafolder];
 end
+disp(system);
+disp(strjoin(["Folders", system.Folders.DefaultData], ' '));
+% disp(["Folders" system.Folders.DefaultData]);
 
 system.Folders.DefaultFileType = {'.nirs'};  % the file type that dat will be saved as (can be more then one)
 
