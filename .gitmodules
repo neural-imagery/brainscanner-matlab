@@ -1,0 +1,3 @@
+[submodule "nirs-toolbox"]
+	path = nirs-toolbox
+	url = https://github.com/huppertt/nirs-toolbox
