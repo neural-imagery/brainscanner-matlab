@@ -2,7 +2,7 @@ Read the docx
 
 Ensure nirs-toolbox is a folder inside brainrecordIR. 
 
-On M1 Mac, install Matlab 2023b or later. On older Macs, ask Claude given your OS what to install. The minimum version for the software on windows is 2019b (2018a as mentioned in the documentation does NOT work).
+On M1 Mac, install Matlab 2023b or later (tested to work). On older Macs, ask Claude given your OS what to install. The minimum version for the software on windows is 2019b (2019b is tested to work, 2018a as mentioned in the documentation does NOT work). The original author develops on 2022a.
 
 ```
 git config fetch.recurseSubmodules on-demand

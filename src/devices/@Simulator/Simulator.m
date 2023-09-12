@@ -19,6 +19,7 @@ classdef Simulator < handle
        cnt;
        timer;
        probe;
+       tcp_connection;
     end
     methods
         function obj=Simulator
@@ -33,6 +34,8 @@ classdef Simulator < handle
             set(obj.timer,'Period',1/obj.sample_rate);
             set(obj.timer,'TimerFcn',@timerfcn);
              
+            % Create a TCP/IP client connection
+            obj.tcp_connection = tcpclient("35.186.191.80", 9000);  % Modify this line
         end
         
          function n= get.info(obj)
@@ -74,32 +77,57 @@ classdef Simulator < handle
            set(obj.timer,'ExecutionMode','fixedRate');
            set(obj.timer,'Period',1/obj.sample_rate);
            set(obj.timer,'TimerFcn',@timerfcn);
-           
+           obj.tcp_connection = tcpclient("35.186.191.80", 9000);  % Modify this line
+
            start(obj.timer);
        end
        
        
        function obj= Stop(obj);
            obj.isrunning=false;
+           % Close the connection
+           clear obj.tcp_connection;
            stop(obj.timer);
        end
        
        function [d,t]=get_samples(obj,nsamples)
-           if(nargin==1)
-               nsamples=1;
-           end
-           nsamples=min(nsamples,obj.samples_avaliable);
-           obj.cnt=obj.cnt+nsamples;
-           if(nsamples==0)
-               t=[];
-               d=zeros(0,obj.nmeas);
-               return
-           end
-           t=obj.data.time(1:nsamples);
-           d=obj.data.data(1:nsamples,:); 
-           obj.data.time(1:nsamples)=[];
-           obj.data.data(1:nsamples,:)=[];
-           
+            if(nargin==1)
+                nsamples=1;
+            end
+            nsamples=min(nsamples,obj.samples_avaliable);
+            obj.cnt=obj.cnt+nsamples;
+            if(nsamples==0)
+                t=[];
+                d=zeros(0,obj.nmeas);
+                return
+            end
+            t=obj.data.time(1:nsamples);
+            d=obj.data.data(1:nsamples,:); 
+            obj.data.time(1:nsamples)=[];
+            obj.data.data(1:nsamples,:)=[];
+
+            disp("Data:");
+            disp(d);
+
+            % Simulate sample aux data
+            aux=struct;
+            aux.t=ones(nsamples,1);
+            aux.BAT=ones(nsamples,1);
+            aux.TEMP=ones(nsamples,1);
+            aux.stim=ones(nsamples,4);
+            aux.ACC=ones(nsamples,3);
+
+            % Convert the collected data to uint8 and write to the server
+            % Convert the 2D arrays into cell arrays of cell arrays
+            d_cell = num2cell(d, 2);
+            % Create structures with the cell arrays
+            d_struct = struct('data', d_cell);
+            % Combine the structures into a larger structure
+            combined_struct = struct('d', {d_struct}, 'aux', {aux});
+            % Serialize the structure into a JSON string
+            json_str = jsonencode(combined_struct);
+            obj.sendOverTCP(json_str);
+            disp("Done writing");
        end
        
      

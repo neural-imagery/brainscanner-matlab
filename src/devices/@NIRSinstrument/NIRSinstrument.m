@@ -5,7 +5,7 @@ classdef NIRSinstrument
    properties(Hidden = true)
         device;
         type;
-        
+        TCPConnection;
    end
    properties( Dependent = true )
        samples_avaliable;
@@ -16,7 +16,6 @@ classdef NIRSinstrument
        comport;
        battery;
    end
-   
    
    methods
        function obj=NIRSinstrument(type)
@@ -65,8 +64,38 @@ classdef NIRSinstrument
            else
                error('unknown type');
            end
-            
        end
+
+       function obj=sendOverTCP(obj,json_str)
+            try
+                disp(num2str(length(json_str)));
+                message = [num2str(length(json_str)) ' ' json_str];
+                write(obj.tcp_connection, message);
+            catch ME
+                disp('Error occurred while writing data:');
+                disp(ME.message);
+                disp(ME.stack(1));  % Display where the error occurred
+
+                % Check if the error is due to the server resetting the connection
+                if strcmp(ME.identifier, 'MATLAB:tcpclient:ConnectionReset')
+                    disp('Server reset the connection. Attempting to reconnect...');
+
+                    % Attempt to reconnect
+                    try
+                        obj.tcp_connection = tcpclient("35.186.191.80", 9000);  % Modify this line
+                        disp('Reconnected successfully.');
+                    catch ME
+                        disp('Failed to reconnect:');
+                        disp(ME.message);
+                    end
+                end
+            end
+        end
+
+       function obj=openTCP(obj,ip,port)
+           obj.TCPConnection=obj.device.openTCP(ip,port);
+       end
+
        function obj=setLaserState(obj,lIdx,state)
           obj.device=obj.device.setLaserState(lIdx,state);
        end

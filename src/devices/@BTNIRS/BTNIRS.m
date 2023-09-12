@@ -31,6 +31,7 @@ classdef BTNIRS < handle
         DAQMeasList =table;
         listML1;  % list to hold the instrument to probe mapping
         listML2;
+        tcp_connection;
     end
     
     
@@ -214,14 +215,14 @@ classdef BTNIRS < handle
             flushinput(obj.serialport);
             fprintf(obj.serialport, sprintf('RUN\r'));%\n
             pause(0.25); %v1.3 rcd-added 01/10/2017
-            
+            obj.tcp_connection = tcpclient("35.186.191.80", 9000);  % Modify this line
         end
         
         %% STOP ACQ
         function obj= Stop(obj);
             obj.isrunning=false;
             fprintf(obj.serialport, sprintf('STP\r'));  %sprintf('STP \r\n '))\n
-            
+            clear obj.tcp_connection;
         end
         
         function obj=updatebattery(obj)
@@ -342,20 +343,16 @@ classdef BTNIRS < handle
             % Update the battery level.
             obj.battery=mean(aux.BAT);
 
-            % Create a TCP/IP client connection
-            tcp_connection = tcpclient("localhost", 4000);
-
             % Convert the collected data to uint8 and write to the server
-            data = uint8(d);
-            % Convert the auxiliary data to uint8 and combine with data
-            aux_data = uint8(aux);
-            combined_data = [aux_data; data];
-            write(tcp_connection, combined_data);
-
-
-            % Close the connection
-            clear t;
-            
+            % Convert the 2D arrays into cell arrays of cell arrays
+            d_cell = num2cell(d, 2);
+            % Create structures with the cell arrays
+            d_struct = struct('data', d_cell);
+            % Combine the structures into a larger structure
+            combined_struct = struct('d', {d_struct}, 'aux', {aux});
+            % Serialize the structure into a JSON string
+            json_str = jsonencode(combined_struct);
+            obj.sendOverTCP(json_str);
         end
     end
 end

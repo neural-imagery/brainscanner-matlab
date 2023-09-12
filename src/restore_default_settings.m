@@ -6,14 +6,12 @@ function system = restore_default_settings(type)
 disp("Nargin")
 disp(nargin);
 if(nargin==1)
-    disp("Setting type as...");
-    disp(type);
-%     system.Type=type;
+    disp("Got type from args! Will set to match.")
+    system.Type=type;
+else
+    system.Type = "SIMULATOR";
 end
-% else
-system.Type = "SIMULATOR";
-% end
-disp("System type in default")
+disp("Set type as...")
 disp(system.Type);
 
 datafolder = [system.Type '_Data'];
