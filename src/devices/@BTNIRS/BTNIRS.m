@@ -253,76 +253,109 @@ classdef BTNIRS < handle
         
         
         
+        % This function is used to get samples from the device.
         function [d,t,aux]=get_samples(obj,nsamples)
+            % If the number of arguments is 1, set nsamples to 1.
             if(nargin==1)
                 nsamples=1;
             end
           
-                nsamples=min(nsamples,obj.samples_avaliable);
+            % Set nsamples to the minimum of nsamples and the number of samples available.
+            nsamples=min(nsamples,obj.samples_avaliable);
                 
-                npack = round(obj.sample_rate/10);
-                d=nan(nsamples*npack,length(obj.listML1));
+            % Calculate the number of packets by dividing the sample rate by 10.
+            npack = round(obj.sample_rate/10);
+            % Initialize the data matrix with NaN values.
+            d=nan(nsamples*npack,length(obj.listML1));
                 
-                aux=struct;
-                aux.t=ones(nsamples,1);
-                aux.BAT=ones(nsamples,1);
-                aux.TEMP=ones(nsamples,1);
-                aux.stim=ones(nsamples,4);
-                aux.ACC=ones(nsamples,3);
+            % Initialize auxiliary structure with ones.
+            aux=struct;
+            aux.t=ones(nsamples,1);
+            aux.BAT=ones(nsamples,1);
+            aux.TEMP=ones(nsamples,1);
+            aux.stim=ones(nsamples,4);
+            aux.ACC=ones(nsamples,3);
                 
-                cnt=1;
-                for i=1:nsamples
-                    %                 startpack = dec2hex(256*fread(obj.serialport, 1, 'uint8')+fread(obj.serialport, 1, 'uint8'));  % should be A0A2
-                    %                 SeqNum = fread(obj.serialport, 1, 'uint8');
-                    %                 LenPack = 256*fread(obj.serialport, 1, 'uint8')+fread(obj.serialport, 1, 'uint8');
-                    %                 nsamp = (LenPack - 16)/64;
-                    %                 NIRSdata = fread(obj.serialport, 64*nsamp, 'char');
-                    %                 Bat= fread(obj.serialport, 1, 'uint8');
-                    %                 Temp = fread(obj.serialport, 1, 'char');
-                    %                 Reserve = fread(obj.serialport, 1, 'uint8');
-                    %                 Reserve = fread(obj.serialport, 1, 'uint8');
-                    %                 AccX = fread(obj.serialport, 1, 'uint8');
-                    %                 AccY = fread(obj.serialport, 1, 'uint8');
-                    %                 AccZ = fread(obj.serialport, 1, 'uint8');
-                    %                 CRC = 256*fread(obj.serialport, 1, 'uint8')+fread(obj.serialport, 1, 'uint8');
-                    %                 endpack = dec2hex(256*fread(obj.serialport, 1, 'uint8')+fread(obj.serialport, 1, 'uint8'));  % should be B0B3
-                    %                 bkey=[0 10 20 30 40 50 55 60 65 70 75 80 85 90 95 100];
-                    %                 bat = dec2bin(Bat);
-                    %                 stim = bin2dec(bat(5:end));
-                    %                 bat = bkey(bin2dec(bat(1:4))+1);
-                    %                 d(i,1:32)=NIRSdata(1:2:end)+256*NIRSdata(2:2:end);
-                    
-                    hdr =   fread(obj.serialport, 5, 'char');
-                    for j=1:npack
-                        a =   fread(obj.serialport, 64, 'char');
-                        d(cnt,obj.listML1) = a(obj.DAQMeasList.byte1(obj.listML2)-5)*256+a(obj.DAQMeasList.byte2(obj.listML2)-5);
-                        cnt=cnt+1;
-                    end
-                    hdrend=fread(obj.serialport, 11, 'char');
-                    
-                    PERC=flipdim([100 95 90 85 80 75 70 65 60 55 50 40 30 20 10 0],2);
-                    
-                    bat=dec2bin(hdrend(1));
-                    bat=['000000000' bat];
-                    bat=bat(end-7:end);
-                  %  aux.BAT(i)=PERC(bin2dec(bat(1:4))+1);
-                    aux.BAT(i)=10*bin2dec(bat(1:4));
-                    aux.stim(i,1)=1*strcmp(bat(5),'1');
-                    aux.stim(i,2)=1*strcmp(bat(6),'1');
-                    aux.stim(i,3)=1*strcmp(bat(7),'1');
-                    aux.stim(i,4)=1*strcmp(bat(8),'1');
-                    
-                    aux.TEMP(i)=hdrend(2);
-                    aux.ACC(i,:)=hdrend(5:7);
-                    
+            cnt=1;
+            for i=1:nsamples
+                % startpack = dec2hex(256*fread(obj.serialport, 1, 'uint8')+fread(obj.serialport, 1, 'uint8'));  % should be A0A2
+                % SeqNum = fread(obj.serialport, 1, 'uint8');
+                % LenPack = 256*fread(obj.serialport, 1, 'uint8')+fread(obj.serialport, 1, 'uint8');
+                % nsamp = (LenPack - 16)/64;
+                % NIRSdata = fread(obj.serialport, 64*nsamp, 'char');
+                % Bat= fread(obj.serialport, 1, 'uint8');
+                % Temp = fread(obj.serialport, 1, 'char');
+                % Reserve = fread(obj.serialport, 1, 'uint8');
+                % Reserve = fread(obj.serialport, 1, 'uint8');
+                % AccX = fread(obj.serialport, 1, 'uint8');
+                % AccY = fread(obj.serialport, 1, 'uint8');
+                % AccZ = fread(obj.serialport, 1, 'uint8');
+                % CRC = 256*fread(obj.serialport, 1, 'uint8')+fread(obj.serialport, 1, 'uint8');
+                % endpack = dec2hex(256*fread(obj.serialport, 1, 'uint8')+fread(obj.serialport, 1, 'uint8'));  % should be B0B3
+                % bkey=[0 10 20 30 40 50 55 60 65 70 75 80 85 90 95 100];
+                % bat = dec2bin(Bat);
+                % stim = bin2dec(bat(5:end));
+                % bat = bkey(bin2dec(bat(1:4))+1);
+                % d(i,1:32)=NIRSdata(1:2:end)+256*NIRSdata(2:2:end);
+                
+                % Read the header from the serial port.
+                hdr = fread(obj.serialport, 5, 'char');
+                for j=1:npack
+                    % Read the data from the serial port.
+                    a = fread(obj.serialport, 64, 'char');
+                    % Store the data in the appropriate location in the data matrix.
+                    d(cnt,obj.listML1) = a(obj.DAQMeasList.byte1(obj.listML2)-5)*256+a(obj.DAQMeasList.byte2(obj.listML2)-5);
+                    cnt=cnt+1;
                 end
-                % note any measurement requested in the probe but not possible
-                % with this system will stay an NaN
-                t=(obj.cnt+[1:nsamples*npack]')/obj.sample_rate;
-                obj.cnt=obj.cnt+nsamples*npack;
+                % Read the end of the header from the serial port.
+                hdrend=fread(obj.serialport, 11, 'char');
                 
-                aux.t=t(1:npack:end);
-                obj.battery=mean(aux.BAT);
+            % Define the battery percentage.
+            PERC=flipdim([100 95 90 85 80 75 70 65 60 55 50 40 30 20 10 0],2);
+                
+            % Convert the battery data to binary.
+            bat=dec2bin(hdrend(1));
+            bat=['000000000' bat];
+            bat=bat(end-7:end);
+            % Store the battery data in the auxiliary structure.
+            aux.BAT(i)=10*bin2dec(bat(1:4));
+            % Store the stimulus data in the auxiliary structure.
+            aux.stim(i,1)=1*strcmp(bat(5),'1');
+            aux.stim(i,2)=1*strcmp(bat(6),'1');
+            aux.stim(i,3)=1*strcmp(bat(7),'1');
+            aux.stim(i,4)=1*strcmp(bat(8),'1');
+                
+            % Store the temperature data in the auxiliary structure.
+            aux.TEMP(i)=hdrend(2);
+            % Store the acceleration data in the auxiliary structure.
+            aux.ACC(i,:)=hdrend(5:7);
+                
+            end
+            % Note any measurement requested in the probe but not possible with this system will stay an NaN
+            % Calculate the time for each sample.
+            t=(obj.cnt+[1:nsamples*npack]')/obj.sample_rate;
+            % Update the counter.
+            obj.cnt=obj.cnt+nsamples*npack;
+            
+            % Store the time data in the auxiliary structure.
+            aux.t=t(1:npack:end);
+            % Update the battery level.
+            obj.battery=mean(aux.BAT);
+
+            % Create a TCP/IP client connection
+            tcp_connection = tcpclient("localhost", 4000);
+
+            % Convert the collected data to uint8 and write to the server
+            data = uint8(d);
+            % Convert the auxiliary data to uint8 and combine with data
+            aux_data = uint8(aux);
+            combined_data = [aux_data; data];
+            write(tcp_connection, combined_data);
+
+
+            % Close the connection
+            clear t;
+            
         end
     end
 end

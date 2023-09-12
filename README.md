@@ -9,9 +9,17 @@ git config fetch.recurseSubmodules on-demand
 git clone https://github.com/huppertt/BrainRecordIR/
 cd BrainRecordIR
 git pull --recurse-submodules
+git submodule init
+git submodule update
 ```
 
-Double click BrainRecordIR.mlapp to open it in MATLAB and run the code. In MATLAB, right click nirs toolbox and hit add to path then hit the option to add all submodules and subfolders. You may have to run, from within the MATLAB terminal, instead of the default BrainRecordIR,
+If nirs-toolbox is still empty, try
+```
+git clone https://github.com/huppertt/nirs-toolbox
+```
+instead of git submodules.
+
+Now, double click BrainRecordIR.mlapp to open it in MATLAB and run the code. In MATLAB, right click nirs toolbox and hit add to path then hit the option to add all submodules and subfolders. You may have to run, from within the MATLAB terminal, instead of the default BrainRecordIR,
 
 ```
 BrainRecordIR('SIMULATOR', 'SIMULATOR')
