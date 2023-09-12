@@ -50,7 +50,7 @@ classdef BTNIRS < handle
             
             obj.serialport=[];
             if(ispc)
-                for i=40:-1:1
+                for i=10:-1:1
                     try
                         disp(['trying COM' num2str(i)])
                         obj.serialport=serial(['COM' num2str(i)]);
@@ -134,7 +134,7 @@ classdef BTNIRS < handle
             type=      [1 1 2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 1 2 2]';
             type(type==1)=735; type(type==2)=850;
             obj.DAQMeasList=table(source,detector,type,byte1,byte2);
-            obj=obj.updatebattery;
+            %obj=obj.updatebattery;
         end
         
         
