@@ -1,0 +1,2719 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body><w:p><w:pPr><w:pStyle w:val="code"/></w:pPr><w:r><w:t><![CDATA[classdef BrainRecordIR < matlab.apps.AppBase
+
+    % Properties that correspond to app components
+    properties (Access = public)
+        BrainRecordIRUIFigure          matlab.ui.Figure
+        FileMenu                       matlab.ui.container.Menu
+        RegisterNewSubjectMenu         matlab.ui.container.Menu
+        LoadSavedDataMenu              matlab.ui.container.Menu
+        PreferencesMenu                matlab.ui.container.Menu
+        ExitMenu                       matlab.ui.container.Menu
+        DataQualityMenu                matlab.ui.container.Menu
+        ShowQualityMenu                matlab.ui.container.Menu
+        QuickSetupMenu                 matlab.ui.container.Menu
+        RegisterProbe                  matlab.ui.container.Menu
+        LaunchPheobeMenu               matlab.ui.container.Menu
+        HelpMenu                       matlab.ui.container.Menu
+        AboutMenu                      matlab.ui.container.Menu
+        HelpDocumentionMenu            matlab.ui.container.Menu
+        TabViewGrou                    matlab.ui.container.TabGroup
+        ResearchViewTab                matlab.ui.container.Tab
+        MainPlotWindow                 matlab.ui.control.UIAxes
+        Label                          matlab.ui.control.Label
+        SelectDisplayType              matlab.ui.control.DropDown
+        AquistionControlsPanel         matlab.ui.container.Panel
+        StartButton                    matlab.ui.control.Button
+        Progressbar                    matlab.ui.control.UIAxes
+        SourcesLabel                   matlab.ui.control.Label
+        SourcesLamp                    matlab.ui.control.Lamp
+        SwitchSourcesOnOff             matlab.ui.control.RockerSwitch
+        MarkEventButton                matlab.ui.control.Button
+        AddCommentButton               matlab.ui.control.Button
+        WindowDataEditField            matlab.ui.control.NumericEditField
+        WindowDataCheckBox             matlab.ui.control.CheckBox
+        AutoscaleYaxisCheckBox         matlab.ui.control.CheckBox
+        Raw690nmunfilteredLabel        matlab.ui.control.Label
+        ClinicalViewTab                matlab.ui.container.Tab
+        RightSO2EditFieldLabel         matlab.ui.control.Label
+        RightSO2EditField              matlab.ui.control.NumericEditField
+        LeftSO2EditFieldLabel          matlab.ui.control.Label
+        LeftSO2EditField               matlab.ui.control.NumericEditField
+        HeartRateEditFieldLabel        matlab.ui.control.Label
+        HeartRateEditField             matlab.ui.control.NumericEditField
+        UIAxesClinicalView             matlab.ui.control.UIAxes
+        ClinicalImageAxis              matlab.ui.control.UIAxes
+        DefineROIsButton               matlab.ui.control.Button
+        StatisticsViewTab              matlab.ui.container.Tab
+        UIAxesStatsViewPlot            matlab.ui.control.UIAxes
+        ListBoxWhichContrast           matlab.ui.control.ListBox
+        ThreshholdEditFieldLabel       matlab.ui.control.Label
+        ThreshholdEditField            matlab.ui.control.NumericEditField
+        DropDownStatsPorQ              matlab.ui.control.DropDown
+        DrawModeDropDownLabel_2        matlab.ui.control.Label
+        DrawMode4StatsView             matlab.ui.control.DropDown
+        DViewDropDownLabel             matlab.ui.control.Label
+        DViewDropDownStats3DViewAngle  matlab.ui.control.DropDown
+        UIAxes                         matlab.ui.control.UIAxes
+        SDGPlotWindow                  matlab.ui.control.UIAxes
+        DrawModeDropDownLabel          matlab.ui.control.Label
+        DrawMode4Probe                 matlab.ui.control.DropDown
+        TabGroupControls               matlab.ui.container.TabGroup
+        DetectorsTab                   matlab.ui.container.Tab
+        AutoGainButton                 matlab.ui.control.Button
+        TabGroupDetectors              matlab.ui.container.TabGroup
+        Tab1_8                         matlab.ui.container.Tab
+        PanelD_1                       matlab.ui.container.Panel
+        LampD_1                        matlab.ui.control.Lamp
+        SliderD_1                      matlab.ui.control.Slider
+        EditFieldD_1                   matlab.ui.control.NumericEditField
+        PanelD_2                       matlab.ui.container.Panel
+        LampD_2                        matlab.ui.control.Lamp
+        SliderD_2                      matlab.ui.control.Slider
+        EditFieldD_2                   matlab.ui.control.NumericEditField
+        PanelD_3                       matlab.ui.container.Panel
+        LampD_3                        matlab.ui.control.Lamp
+        SliderD_3                      matlab.ui.control.Slider
+        EditFieldD_3                   matlab.ui.control.NumericEditField
+        PanelD_4                       matlab.ui.container.Panel
+        LampD_4                        matlab.ui.control.Lamp
+        SliderD_4                      matlab.ui.control.Slider
+        EditFieldD_4                   matlab.ui.control.NumericEditField
+        PanelD_5                       matlab.ui.container.Panel
+        LampD_5                        matlab.ui.control.Lamp
+        SliderD_5                      matlab.ui.control.Slider
+        EditFieldD_5                   matlab.ui.control.NumericEditField
+        PanelD_6                       matlab.ui.container.Panel
+        LampD_6                        matlab.ui.control.Lamp
+        SliderD_6                      matlab.ui.control.Slider
+        EditFieldD_6                   matlab.ui.control.NumericEditField
+        PanelD_7                       matlab.ui.container.Panel
+        LampD_7                        matlab.ui.control.Lamp
+        SliderD_7                      matlab.ui.control.Slider
+        EditFieldD_7                   matlab.ui.control.NumericEditField
+        PanelD_8                       matlab.ui.container.Panel
+        LampD_8                        matlab.ui.control.Lamp
+        SliderD_8                      matlab.ui.control.Slider
+        EditFieldD_8                   matlab.ui.control.NumericEditField
+        SetAllGainEditFieldLabel       matlab.ui.control.Label
+        SetAllGainEditField            matlab.ui.control.NumericEditField
+        Tab9_16                        matlab.ui.container.Tab
+        PanelD_9                       matlab.ui.container.Panel
+        LampD_9                        matlab.ui.control.Lamp
+        SliderD_9                      matlab.ui.control.Slider
+        EditFieldD_9                   matlab.ui.control.NumericEditField
+        PanelD_10                      matlab.ui.container.Panel
+        LampD_10                       matlab.ui.control.Lamp
+        SliderD_10                     matlab.ui.control.Slider
+        EditFieldD_10                  matlab.ui.control.NumericEditField
+        PanelD_11                      matlab.ui.container.Panel
+        LampD_11                       matlab.ui.control.Lamp
+        SliderD_11                     matlab.ui.control.Slider
+        EditFieldD_11                  matlab.ui.control.NumericEditField
+        PanelD_12                      matlab.ui.container.Panel
+        LampD_12                       matlab.ui.control.Lamp
+        SliderD_12                     matlab.ui.control.Slider
+        EditFieldD_12                  matlab.ui.control.NumericEditField
+        PanelD_13                      matlab.ui.container.Panel
+        LampD_13                       matlab.ui.control.Lamp
+        SliderD_13                     matlab.ui.control.Slider
+        EditFieldD_13                  matlab.ui.control.NumericEditField
+        PanelD_14                      matlab.ui.container.Panel
+        LampD_14                       matlab.ui.control.Lamp
+        SliderD_14                     matlab.ui.control.Slider
+        EditFieldD_14                  matlab.ui.control.NumericEditField
+        PanelD_15                      matlab.ui.container.Panel
+        LampD_15                       matlab.ui.control.Lamp
+        SliderD_15                     matlab.ui.control.Slider
+        EditFieldD_15                  matlab.ui.control.NumericEditField
+        PanelD_16                      matlab.ui.container.Panel
+        LampD_16                       matlab.ui.control.Lamp
+        SliderD_16                     matlab.ui.control.Slider
+        EditFieldD_16                  matlab.ui.control.NumericEditField
+        Tab17_24                       matlab.ui.container.Tab
+        PanelD_17                      matlab.ui.container.Panel
+        LampD_17                       matlab.ui.control.Lamp
+        SliderD_17                     matlab.ui.control.Slider
+        EditFieldD_17                  matlab.ui.control.NumericEditField
+        PanelD_18                      matlab.ui.container.Panel
+        LampD_18                       matlab.ui.control.Lamp
+        SliderD_18                     matlab.ui.control.Slider
+        EditFieldD_18                  matlab.ui.control.NumericEditField
+        PanelD_19                      matlab.ui.container.Panel
+        LampD_19                       matlab.ui.control.Lamp
+        SliderD_19                     matlab.ui.control.Slider
+        EditFieldD_19                  matlab.ui.control.NumericEditField
+        PanelD_20                      matlab.ui.container.Panel
+        LampD_20                       matlab.ui.control.Lamp
+        SliderD_20                     matlab.ui.control.Slider
+        EditFieldD_20                  matlab.ui.control.NumericEditField
+        PanelD_21                      matlab.ui.container.Panel
+        LampD_21                       matlab.ui.control.Lamp
+        SliderD_21                     matlab.ui.control.Slider
+        EditFieldD_21                  matlab.ui.control.NumericEditField
+        PanelD_22                      matlab.ui.container.Panel
+        LampD_22                       matlab.ui.control.Lamp
+        SliderD_22                     matlab.ui.control.Slider
+        EditFieldD_22                  matlab.ui.control.NumericEditField
+        PanelD_23                      matlab.ui.container.Panel
+        LampD_23                       matlab.ui.control.Lamp
+        SliderD_23                     matlab.ui.control.Slider
+        EditFieldD_23                  matlab.ui.control.NumericEditField
+        PanelD_24                      matlab.ui.container.Panel
+        LampD_24                       matlab.ui.control.Lamp
+        SliderD_24                     matlab.ui.control.Slider
+        EditFieldD_24                  matlab.ui.control.NumericEditField
+        Tab25_32                       matlab.ui.container.Tab
+        PanelD_25                      matlab.ui.container.Panel
+        LampD_25                       matlab.ui.control.Lamp
+        SliderD_25                     matlab.ui.control.Slider
+        EditFieldD_25                  matlab.ui.control.NumericEditField
+        PanelD_26                      matlab.ui.container.Panel
+        LampD_26                       matlab.ui.control.Lamp
+        SliderD_26                     matlab.ui.control.Slider
+        EditFieldD_26                  matlab.ui.control.NumericEditField
+        PanelD_27                      matlab.ui.container.Panel
+        LampD_27                       matlab.ui.control.Lamp
+        SliderD_27                     matlab.ui.control.Slider
+        EditFieldD_27                  matlab.ui.control.NumericEditField
+        PanelD_28                      matlab.ui.container.Panel
+        LampD_28                       matlab.ui.control.Lamp
+        SliderD_28                     matlab.ui.control.Slider
+        EditFieldD_28                  matlab.ui.control.NumericEditField
+        PanelD_29                      matlab.ui.container.Panel
+        LampD_29                       matlab.ui.control.Lamp
+        SliderD_29                     matlab.ui.control.Slider
+        EditFieldD_29                  matlab.ui.control.NumericEditField
+        PanelD_30                      matlab.ui.container.Panel
+        LampD_30                       matlab.ui.control.Lamp
+        SliderD_30                     matlab.ui.control.Slider
+        EditFieldD_30                  matlab.ui.control.NumericEditField
+        PanelD_31                      matlab.ui.container.Panel
+        LampD_31                       matlab.ui.control.Lamp
+        SliderD_31                     matlab.ui.control.Slider
+        EditFieldD_31                  matlab.ui.control.NumericEditField
+        PanelD_32                      matlab.ui.container.Panel
+        LampD_32                       matlab.ui.control.Lamp
+        SliderD_32                     matlab.ui.control.Slider
+        EditFieldD_32                  matlab.ui.control.NumericEditField
+        ShowNoiseMapButton             matlab.ui.control.Button
+        SourcesTab                     matlab.ui.container.Tab
+        AutoAdjustButton               matlab.ui.control.Button
+        TabGroup                       matlab.ui.container.TabGroup
+        Tab                            matlab.ui.container.Tab
+        Src1Panel                      matlab.ui.container.Panel
+        SpinnerS_1                     matlab.ui.control.Spinner
+        SpinnerS_2                     matlab.ui.control.Spinner
+        SwitchS_1                      matlab.ui.control.RockerSwitch
+        SwitchS_2                      matlab.ui.control.RockerSwitch
+        LampS_1                        matlab.ui.control.Lamp
+        LampS_2                        matlab.ui.control.Lamp
+        Src2Panel                      matlab.ui.container.Panel
+        SpinnerS_3                     matlab.ui.control.Spinner
+        SpinnerS_4                     matlab.ui.control.Spinner
+        SwitchS_3                      matlab.ui.control.RockerSwitch
+        SwitchS_4                      matlab.ui.control.RockerSwitch
+        LampS_3                        matlab.ui.control.Lamp
+        LampS_4                        matlab.ui.control.Lamp
+        Src3Panel                      matlab.ui.container.Panel
+        SpinnerS_5                     matlab.ui.control.Spinner
+        SpinnerS_6                     matlab.ui.control.Spinner
+        SwitchS_5                      matlab.ui.control.RockerSwitch
+        SwitchS_6                      matlab.ui.control.RockerSwitch
+        LampS_5                        matlab.ui.control.Lamp
+        LampS_6                        matlab.ui.control.Lamp
+        Src4Panel                      matlab.ui.container.Panel
+        SpinnerS_7                     matlab.ui.control.Spinner
+        SpinnerS_8                     matlab.ui.control.Spinner
+        SwitchS_7                      matlab.ui.control.RockerSwitch
+        SwitchS_8                      matlab.ui.control.RockerSwitch
+        LampS_7                        matlab.ui.control.Lamp
+        LampS_8                        matlab.ui.control.Lamp
+        Tab_2                          matlab.ui.container.Tab
+        Src5Panel                      matlab.ui.container.Panel
+        SpinnerS_9                     matlab.ui.control.Spinner
+        SpinnerS_10                    matlab.ui.control.Spinner
+        SwitchS_9                      matlab.ui.control.RockerSwitch
+        SwitchS_10                     matlab.ui.control.RockerSwitch
+        LampS_9                        matlab.ui.control.Lamp
+        LampS_10                       matlab.ui.control.Lamp
+        Src6Panel                      matlab.ui.container.Panel
+        SpinnerS_11                    matlab.ui.control.Spinner
+        SpinnerS_12                    matlab.ui.control.Spinner
+        SwitchS_11                     matlab.ui.control.RockerSwitch
+        SwitchS_12                     matlab.ui.control.RockerSwitch
+        LampS_11                       matlab.ui.control.Lamp
+        LampS_12                       matlab.ui.control.Lamp
+        Src7Panel                      matlab.ui.container.Panel
+        SpinnerS_13                    matlab.ui.control.Spinner
+        SpinnerS_14                    matlab.ui.control.Spinner
+        SwitchS_13                     matlab.ui.control.RockerSwitch
+        SwitchS_14                     matlab.ui.control.RockerSwitch
+        LampS_13                       matlab.ui.control.Lamp
+        LampS_14                       matlab.ui.control.Lamp
+        Src8Panel                      matlab.ui.container.Panel
+        SpinnerS_15                    matlab.ui.control.Spinner
+        SpinnerS_16                    matlab.ui.control.Spinner
+        SwitchS_15                     matlab.ui.control.RockerSwitch
+        SwitchS_16                     matlab.ui.control.RockerSwitch
+        LampS_15                       matlab.ui.control.Lamp
+        LampS_16                       matlab.ui.control.Lamp
+        Tab_3                          matlab.ui.container.Tab
+        Src9Panel                      matlab.ui.container.Panel
+        SpinnerS_17                    matlab.ui.control.Spinner
+        SpinnerS_18                    matlab.ui.control.Spinner
+        SwitchS_17                     matlab.ui.control.RockerSwitch
+        SwitchS_18                     matlab.ui.control.RockerSwitch
+        LampS_17                       matlab.ui.control.Lamp
+        LampS_18                       matlab.ui.control.Lamp
+        Src10Panel                     matlab.ui.container.Panel
+        SpinnerS_19                    matlab.ui.control.Spinner
+        SpinnerS_20                    matlab.ui.control.Spinner
+        SwitchS_19                     matlab.ui.control.RockerSwitch
+        SwitchS_20                     matlab.ui.control.RockerSwitch
+        LampS_19                       matlab.ui.control.Lamp
+        LampS_20                       matlab.ui.control.Lamp
+        Src11Panel                     matlab.ui.container.Panel
+        SpinnerS_21                    matlab.ui.control.Spinner
+        SpinnerS_22                    matlab.ui.control.Spinner
+        SwitchS_21                     matlab.ui.control.RockerSwitch
+        SwitchS_22                     matlab.ui.control.RockerSwitch
+        LampS_21                       matlab.ui.control.Lamp
+        LampS_22                       matlab.ui.control.Lamp
+        Src12Panel                     matlab.ui.container.Panel
+        SpinnerS_23                    matlab.ui.control.Spinner
+        SpinnerS_24                    matlab.ui.control.Spinner
+        SwitchS_23                     matlab.ui.control.RockerSwitch
+        SwitchS_24                     matlab.ui.control.RockerSwitch
+        LampS_23                       matlab.ui.control.Lamp
+        LampS_24                       matlab.ui.control.Lamp
+        Tab_4                          matlab.ui.container.Tab
+        Src13Panel                     matlab.ui.container.Panel
+        SpinnerS_25                    matlab.ui.control.Spinner
+        SpinnerS_26                    matlab.ui.control.Spinner
+        SwitchS_25                     matlab.ui.control.RockerSwitch
+        SwitchS_26                     matlab.ui.control.RockerSwitch
+        LampS_25                       matlab.ui.control.Lamp
+        LampS_26                       matlab.ui.control.Lamp
+        Src14Panel                     matlab.ui.container.Panel
+        SpinnerS_27                    matlab.ui.control.Spinner
+        SpinnerS_28                    matlab.ui.control.Spinner
+        SwitchS_27                     matlab.ui.control.RockerSwitch
+        SwitchS_28                     matlab.ui.control.RockerSwitch
+        LampS_27                       matlab.ui.control.Lamp
+        LampS_28                       matlab.ui.control.Lamp
+        Src15Panel                     matlab.ui.container.Panel
+        SpinnerS_29                    matlab.ui.control.Spinner
+        SpinnerS_30                    matlab.ui.control.Spinner
+        SwitchS_29                     matlab.ui.control.RockerSwitch
+        SwitchS_30                     matlab.ui.control.RockerSwitch
+        LampS_29                       matlab.ui.control.Lamp
+        LampS_30                       matlab.ui.control.Lamp
+        Src16Panel                     matlab.ui.container.Panel
+        SpinnerS_31                    matlab.ui.control.Spinner
+        SpinnerS_32                    matlab.ui.control.Spinner
+        SwitchS_31                     matlab.ui.control.RockerSwitch
+        SwitchS_32                     matlab.ui.control.RockerSwitch
+        LampS_31                       matlab.ui.control.Lamp
+        LampS_32                       matlab.ui.control.Lamp
+        LinkWavelengthsCheckBox        matlab.ui.control.CheckBox
+        SetAllPowersEditFieldLabel     matlab.ui.control.Label
+        SetAllPowersEditField          matlab.ui.control.NumericEditField
+        EventsTab                      matlab.ui.container.Tab
+        UITable                        matlab.ui.control.Table
+        Panel_9                        matlab.ui.container.Panel
+        MarkEventButton_2              matlab.ui.control.Button
+        Switch_33                      matlab.ui.control.RockerSwitch
+        TaskDropDown                   matlab.ui.control.DropDown
+        Label_2                        matlab.ui.control.Label
+        NumberofEventsLabel            matlab.ui.control.Label
+        AuxTriggersPanel               matlab.ui.container.Panel
+        Aux1Lamp_4                     matlab.ui.control.Lamp
+        Aux1Lamp_5                     matlab.ui.control.Lamp
+        Aux1Lamp_6                     matlab.ui.control.Lamp
+        Aux1Lamp_7                     matlab.ui.control.Lamp
+        Aux1Lamp_8                     matlab.ui.control.Lamp
+        Aux1Lamp_9                     matlab.ui.control.Lamp
+        Aux1Lamp_10                    matlab.ui.control.Lamp
+        Aux1Lamp_11                    matlab.ui.control.Lamp
+        RealtimeTab                    matlab.ui.container.Tab
+        FilteringPanel                 matlab.ui.container.Panel
+        HighPassEditFieldLabel         matlab.ui.control.Label
+        HighPassEditField              matlab.ui.control.NumericEditField
+        LowPassEditFieldLabel          matlab.ui.control.Label
+        LowPassEditField               matlab.ui.control.NumericEditField
+        CheckBox                       matlab.ui.control.CheckBox
+        CheckBox_2                     matlab.ui.control.CheckBox
+        MotionCorrectionPanel          matlab.ui.container.Panel
+        LinearModelPanel               matlab.ui.container.Panel
+        ModelDropDownLabel             matlab.ui.control.Label
+        ModelDropDown                  matlab.ui.control.DropDown
+        ApplyGLMCheckBox               matlab.ui.control.CheckBox
+        TuneSliderLabel                matlab.ui.control.Label
+        TuneSlider                     matlab.ui.control.Slider
+        ApplyMotionCorrectionCheckBox  matlab.ui.control.CheckBox
+        FilesTab                       matlab.ui.container.Tab
+        Tree                           matlab.ui.container.Tree
+        DataNode                       matlab.ui.container.TreeNode
+        RecordedFilesNode              matlab.ui.container.TreeNode
+        LoadedFilesNode                matlab.ui.container.TreeNode
+        AnalyzedResultsNode            matlab.ui.container.TreeNode
+        RunAnalysisButton              matlab.ui.control.Button
+        SystemTab                      matlab.ui.container.Tab
+        SampleRateDropDownLabel        matlab.ui.control.Label
+        SampleRateDropDown             matlab.ui.control.DropDown
+        ApplyHardwarefiltersCheckBox   matlab.ui.control.CheckBox
+        SystemMessageTextAreaLabel     matlab.ui.control.Label
+        SystemMessageTextArea          matlab.ui.control.TextArea
+        ConnectionEditFieldLabel       matlab.ui.control.Label
+        ConnectionEditField            matlab.ui.control.EditField
+        NotConnectedLampLabel          matlab.ui.control.Label
+        NotConnectedLamp               matlab.ui.control.Lamp
+        Battery100Label                matlab.ui.control.Label
+    end
+
+    
+    properties (Access = public)
+        SystemType = "BTNIRS"; % Instrument type
+        Device; % Control class for system
+        UpdateTime=500; % ms to update display
+        handles; % struct to hold handles to app controls
+        Subject % Holds data
+        Folders % default folder locations
+        Drawing % holds the drawing handles
+        MainTimer % holds drawing and data collection timer;
+        Realtime % Description
+    end
+    
+
+   
+
+    % Callbacks that handle component events
+    methods (Access = private)
+
+        % Code that executes after component creation
+        function startupFcn(app, systemType, datafolder)
+            
+            if(nargin<2)
+                systemType=[];
+            end
+            if(nargin>2 && ~isempty(datafolder))
+                if(ismac | isunix)
+                    datafolder = ['/Users/' getenv('USER') '/Desktop/' datafolder];
+                else
+                    datafolder = [getenv('UserProfile') '\Desktop\' datafolder];
+                end
+            else
+                datafolder=[];
+            end
+            
+            
+            
+            set(app.BrainRecordIRUIFigure,'WindowState','minimized');
+            set(app.BrainRecordIRUIFigure,'visible','off');
+            
+            % make sure the matlab path is ok
+            folder=fileparts(which('BrainRecordIR.mlapp'));
+            if(~contains(path,fullfile(folder,'src')))
+                disp('Adding BrainRecordIR files to path');
+                path(path,genpath(folder));
+            end
+            s = SplashScreen( 'TechEn', 'splash.png');
+            initializeApp(app,systemType, datafolder);
+            pause(1);
+            set(app.BrainRecordIRUIFigure,'WindowState','maximized');
+            set(app.BrainRecordIRUIFigure,'visible','on');
+            delete(s);
+            
+            if(app.Device.isconnected)
+                set(app.NotConnectedLamp,'Color','g');
+                set(app.NotConnectedLampLabel,'Text',app.Device.info);
+            else
+                set(app.NotConnectedLamp,'Color',[0.902 0.902 0.902]);
+                set(app.NotConnectedLampLabel,'Text','Not Connected');
+            end
+            set(app.Battery100Label,'Text',['Battery=' num2str(app.Device.battery) '%']);
+
+            
+            
+        end
+
+        % Menu selected function: RegisterNewSubjectMenu
+        function RegisterNewSubjectMenuSelected(app, event)
+            RegisterSubject;
+        end
+
+        % Menu selected function: AboutMenu
+        function AboutMenuSelected(app, event)
+           %display the message box about the software
+           msgbox({'Brain RecordIR Software',...
+               'Ted Huppert','University of Pittsburgh','Copyright 2018'},...
+               'About');
+           
+        
+        end
+
+        % Button pushed function: StartButton
+        function StartButtonPushed(app, event)
+            StartDAQ();
+        end
+
+        % Value changed function: SwitchSourcesOnOff
+        function SwitchSourcesOnOffValueChanged(app, event)
+            LasersAllOnOff;
+            
+        end
+
+        % Value changed function: SelectDisplayType
+        function SelectDisplayTypeValueChanged(app, event)
+            SelectWhichData;
+            
+        end
+
+        % Menu selected function: LoadSavedDataMenu
+        function LoadSavedDataMenuSelected(app, event)
+            LoadPrevious;
+        end
+
+        % Menu selected function: ExitMenu
+        function ExitMenuSelected(app, event)
+            ShutdownNIRS;
+            delete(app);
+        end
+
+        % Menu selected function: PreferencesMenu
+        function PreferencesMenuSelected(app, event)
+            
+        end
+
+        % Menu selected function: QuickSetupMenu
+        function QuickSetupMenuSelected(app, event)
+            
+        end
+
+        % Menu selected function: ShowQualityMenu
+        function ShowQualityMenuSelected(app, event)
+            
+        end
+
+        % Menu selected function: HelpDocumentionMenu
+        function HelpDocumentionMenuSelected(app, event)
+            
+        end
+
+        % Button pushed function: MarkEventButton, MarkEventButton_2
+        function MarkEventButton_2Pushed(app, event)
+            AddStimEvent;
+        end
+
+        % Value changed function: Switch_33
+        function Switch_33ValueChanged(app, event)
+            EventToggle;
+            
+        end
+
+        % Value changed function: TaskDropDown
+        function TaskDropDownValueChanged(app, event)
+            
+        end
+
+        % Button pushed function: AddCommentButton
+        function AddCommentButtonPushed(app, event)
+            AddStimComment;
+        end
+
+        % Button pushed function: AutoAdjustButton
+        function AutoAdjustButtonPushed(app, event)
+            LaserAutoAdjust;
+        end
+
+        % Button pushed function: AutoGainButton
+        function AutoGainButtonPushed(app, event)
+            DetAutoAdjust;
+        end
+
+        % Button pushed function: ShowNoiseMapButton
+        function ShowNoiseMapButtonPushed(app, event)
+            ShowSNRDetectors;
+        end
+
+        % Value changed function: HighPassEditField
+        function HighPassEditFieldValueChanged(app, event)
+            BPFchanged;
+            
+        end
+
+        % Value changed function: CheckBox
+        function CheckBoxValueChanged(app, event)
+            BPFchanged;
+            
+        end
+
+        % Value changed function: LowPassEditField
+        function LowPassEditFieldValueChanged(app, event)
+            BPFchanged;
+            
+        end
+
+        % Value changed function: CheckBox_2
+        function CheckBox_2ValueChanged(app, event)
+            BPFchanged;
+            
+        end
+
+        % Value changed function: ApplyMotionCorrectionCheckBox
+        function ApplyMotionCorrectionCheckBoxValueChanged(app, event)
+           MOCOchanged;
+            
+        end
+
+        % Value changed function: ApplyGLMCheckBox
+        function ApplyGLMCheckBoxValueChanged(app, event)
+            GLMchanged;
+            
+        end
+
+        % Button pushed function: RunAnalysisButton
+        function RunAnalysisButtonPushed(app, event)
+            PostAnalysis;
+        end
+
+        % Value changed function: DrawMode4Probe
+        function DrawMode4ProbeValueChanged(app, event)
+            ChangeProbeView;
+            
+        end
+
+        % Value changed function: LinkWavelengthsCheckBox
+        function LinkWavelengthsCheckBoxValueChanged(app, event)
+            
+        end
+
+        % Close request function: BrainRecordIRUIFigure
+        function BrainRecordIRUIFigureCloseRequest(app, event)
+            ShutdownNIRS;
+            delete(app)
+            
+        end
+
+        % Value changed function: DrawMode4StatsView
+        function DrawMode4StatsViewValueChanged(app, event)
+            ChangeProbeViewStats;
+            
+        end
+
+        % Value changed function: ListBoxWhichContrast
+        function ListBoxWhichContrastValueChanged(app, event)
+             ChangeProbeViewStats;
+            
+        end
+
+        % Value changed function: ThreshholdEditField
+        function ThreshholdEditFieldValueChanged(app, event)
+             ChangeProbeViewStats;
+            
+        end
+
+        % Value changed function: DropDownStatsPorQ
+        function DropDownStatsPorQValueChanged(app, event)
+             ChangeProbeViewStats;
+            
+        end
+
+        % Value changed function: DViewDropDownStats3DViewAngle
+        function DViewDropDownStats3DViewAngleValueChanged(app, event)
+             ChangeProbeViewStats;
+            
+        end
+
+        % Value changed function: ApplyHardwarefiltersCheckBox
+        function ApplyHardwarefiltersCheckBoxValueChanged(app, event)
+            HardWareFiltersChanged;
+            
+        end
+
+        % Value changed function: SampleRateDropDown
+        function SampleRateDropDownValueChanged(app, event)
+            SampleRateChanged(str2num(event.Value(1:end-2)));
+            
+        end
+
+        % Value changed function: SetAllGainEditField
+        function SetAllGainEditFieldValueChanged(app, event)
+            value = app.SetAllGainEditField.Value;
+            SetAllDetGains(value);
+        end
+
+        % Value changed function: SetAllPowersEditField
+        function SetAllPowersEditFieldValueChanged(app, event)
+            value = app.SetAllPowersEditField.Value;
+            SetAllLaserPwr(value);
+        end
+    end
+
+    % Component initialization
+    methods (Access = private)
+
+        % Create UIFigure and components
+        function createComponents(app)
+
+            % Create BrainRecordIRUIFigure and hide until all components are created
+            app.BrainRecordIRUIFigure = uifigure('Visible', 'off');
+            app.BrainRecordIRUIFigure.Position = [100 100 1123 675];
+            app.BrainRecordIRUIFigure.Name = 'Brain RecordIR';
+            app.BrainRecordIRUIFigure.CloseRequestFcn = createCallbackFcn(app, @BrainRecordIRUIFigureCloseRequest, true);
+
+            % Create FileMenu
+            app.FileMenu = uimenu(app.BrainRecordIRUIFigure);
+            app.FileMenu.Text = 'File';
+
+            % Create RegisterNewSubjectMenu
+            app.RegisterNewSubjectMenu = uimenu(app.FileMenu);
+            app.RegisterNewSubjectMenu.MenuSelectedFcn = createCallbackFcn(app, @RegisterNewSubjectMenuSelected, true);
+            app.RegisterNewSubjectMenu.Text = 'Register New Subject';
+
+            % Create LoadSavedDataMenu
+            app.LoadSavedDataMenu = uimenu(app.FileMenu);
+            app.LoadSavedDataMenu.MenuSelectedFcn = createCallbackFcn(app, @LoadSavedDataMenuSelected, true);
+            app.LoadSavedDataMenu.Text = 'Load Saved Data';
+
+            % Create PreferencesMenu
+            app.PreferencesMenu = uimenu(app.FileMenu);
+            app.PreferencesMenu.MenuSelectedFcn = createCallbackFcn(app, @PreferencesMenuSelected, true);
+            app.PreferencesMenu.Text = 'Preferences';
+
+            % Create ExitMenu
+            app.ExitMenu = uimenu(app.FileMenu);
+            app.ExitMenu.MenuSelectedFcn = createCallbackFcn(app, @ExitMenuSelected, true);
+            app.ExitMenu.Text = 'Exit';
+
+            % Create DataQualityMenu
+            app.DataQualityMenu = uimenu(app.BrainRecordIRUIFigure);
+            app.DataQualityMenu.Text = 'Data Quality';
+
+            % Create ShowQualityMenu
+            app.ShowQualityMenu = uimenu(app.DataQualityMenu);
+            app.ShowQualityMenu.MenuSelectedFcn = createCallbackFcn(app, @ShowQualityMenuSelected, true);
+            app.ShowQualityMenu.Text = 'Show Quality';
+
+            % Create QuickSetupMenu
+            app.QuickSetupMenu = uimenu(app.DataQualityMenu);
+            app.QuickSetupMenu.MenuSelectedFcn = createCallbackFcn(app, @QuickSetupMenuSelected, true);
+            app.QuickSetupMenu.Text = 'Quick Setup';
+
+            % Create RegisterProbe
+            app.RegisterProbe = uimenu(app.BrainRecordIRUIFigure);
+            app.RegisterProbe.Text = 'Register Probe';
+
+            % Create LaunchPheobeMenu
+            app.LaunchPheobeMenu = uimenu(app.RegisterProbe);
+            app.LaunchPheobeMenu.Text = 'Launch Pheobe';
+
+            % Create HelpMenu
+            app.HelpMenu = uimenu(app.BrainRecordIRUIFigure);
+            app.HelpMenu.Text = 'Help';
+
+            % Create AboutMenu
+            app.AboutMenu = uimenu(app.HelpMenu);
+            app.AboutMenu.MenuSelectedFcn = createCallbackFcn(app, @AboutMenuSelected, true);
+            app.AboutMenu.Text = 'About';
+
+            % Create HelpDocumentionMenu
+            app.HelpDocumentionMenu = uimenu(app.HelpMenu);
+            app.HelpDocumentionMenu.MenuSelectedFcn = createCallbackFcn(app, @HelpDocumentionMenuSelected, true);
+            app.HelpDocumentionMenu.Text = 'Help Documention';
+
+            % Create TabViewGrou
+            app.TabViewGrou = uitabgroup(app.BrainRecordIRUIFigure);
+            app.TabViewGrou.Position = [9 15 710 646];
+
+            % Create ResearchViewTab
+            app.ResearchViewTab = uitab(app.TabViewGrou);
+            app.ResearchViewTab.Title = 'Research View';
+
+            % Create MainPlotWindow
+            app.MainPlotWindow = uiaxes(app.ResearchViewTab);
+            xlabel(app.MainPlotWindow, 'Time')
+            app.MainPlotWindow.PlotBoxAspectRatio = [1.52941176470588 1 1];
+            app.MainPlotWindow.Box = 'on';
+            app.MainPlotWindow.YGrid = 'on';
+            app.MainPlotWindow.Position = [11 123 678 451];
+
+            % Create Label
+            app.Label = uilabel(app.ResearchViewTab);
+            app.Label.HorizontalAlignment = 'right';
+            app.Label.FontWeight = 'bold';
+            app.Label.Position = [31 137 25 22];
+            app.Label.Text = '';
+
+            % Create SelectDisplayType
+            app.SelectDisplayType = uidropdown(app.ResearchViewTab);
+            app.SelectDisplayType.Items = {'Raw 690nm', 'Raw 830nm', '\deltaOD 690nm', '\deltaOD 830nm', 'HbO_2', 'HbR'};
+            app.SelectDisplayType.ValueChangedFcn = createCallbackFcn(app, @SelectDisplayTypeValueChanged, true);
+            app.SelectDisplayType.FontWeight = 'bold';
+            app.SelectDisplayType.Position = [35 66 207 22];
+            app.SelectDisplayType.Value = 'Raw 690nm';
+
+            % Create AquistionControlsPanel
+            app.AquistionControlsPanel = uipanel(app.ResearchViewTab);
+            app.AquistionControlsPanel.Title = 'Aquistion Controls';
+            app.AquistionControlsPanel.FontWeight = 'bold';
+            app.AquistionControlsPanel.Position = [294 6 384 86];
+
+            % Create StartButton
+            app.StartButton = uibutton(app.AquistionControlsPanel, 'push');
+            app.StartButton.ButtonPushedFcn = createCallbackFcn(app, @StartButtonPushed, true);
+            app.StartButton.FontWeight = 'bold';
+            app.StartButton.Position = [7 39 76 23];
+            app.StartButton.Text = 'Start';
+
+            % Create Progressbar
+            app.Progressbar = uiaxes(app.AquistionControlsPanel);
+            app.Progressbar.Box = 'on';
+            app.Progressbar.XTick = [];
+            app.Progressbar.YTick = [];
+            app.Progressbar.Position = [90 38 190 27];
+
+            % Create SourcesLabel
+            app.SourcesLabel = uilabel(app.AquistionControlsPanel);
+            app.SourcesLabel.HorizontalAlignment = 'right';
+            app.SourcesLabel.FontWeight = 'bold';
+            app.SourcesLabel.Position = [287 40 52 22];
+            app.SourcesLabel.Text = 'Sources';
+
+            % Create SourcesLamp
+            app.SourcesLamp = uilamp(app.AquistionControlsPanel);
+            app.SourcesLamp.Position = [354 40 20 20];
+            app.SourcesLamp.Color = [0.6 0.6 0.6];
+
+            % Create SwitchSourcesOnOff
+            app.SwitchSourcesOnOff = uiswitch(app.AquistionControlsPanel, 'rocker');
+            app.SwitchSourcesOnOff.Orientation = 'horizontal';
+            app.SwitchSourcesOnOff.ValueChangedFcn = createCallbackFcn(app, @SwitchSourcesOnOffValueChanged, true);
+            app.SwitchSourcesOnOff.Tooltip = {'Turns all the light sources on/off'};
+            app.SwitchSourcesOnOff.FontSize = 10;
+            app.SwitchSourcesOnOff.Position = [314 11 45 20];
+
+            % Create MarkEventButton
+            app.MarkEventButton = uibutton(app.AquistionControlsPanel, 'push');
+            app.MarkEventButton.ButtonPushedFcn = createCallbackFcn(app, @MarkEventButton_2Pushed, true);
+            app.MarkEventButton.FontWeight = 'bold';
+            app.MarkEventButton.Tooltip = {'Button to mark task events'};
+            app.MarkEventButton.Position = [5 9 80 23];
+            app.MarkEventButton.Text = 'Mark Event';
+
+            % Create AddCommentButton
+            app.AddCommentButton = uibutton(app.AquistionControlsPanel, 'push');
+            app.AddCommentButton.ButtonPushedFcn = createCallbackFcn(app, @AddCommentButtonPushed, true);
+            app.AddCommentButton.FontWeight = 'bold';
+            app.AddCommentButton.Tooltip = {'Button to add user comment about study (time-stamped)'};
+            app.AddCommentButton.Position = [98 9 98 23];
+            app.AddCommentButton.Text = 'Add Comment';
+
+            % Create WindowDataEditField
+            app.WindowDataEditField = uieditfield(app.ResearchViewTab, 'numeric');
+            app.WindowDataEditField.LowerLimitInclusive = 'off';
+            app.WindowDataEditField.Limits = [0 Inf];
+            app.WindowDataEditField.Position = [136 35 63 22];
+            app.WindowDataEditField.Value = 20;
+
+            % Create WindowDataCheckBox
+            app.WindowDataCheckBox = uicheckbox(app.ResearchViewTab);
+            app.WindowDataCheckBox.Text = 'Window Data';
+            app.WindowDataCheckBox.FontWeight = 'bold';
+            app.WindowDataCheckBox.Position = [35 35 98 22];
+
+            % Create AutoscaleYaxisCheckBox
+            app.AutoscaleYaxisCheckBox = uicheckbox(app.ResearchViewTab);
+            app.AutoscaleYaxisCheckBox.Text = 'Auto-scale Y-axis';
+            app.AutoscaleYaxisCheckBox.FontWeight = 'bold';
+            app.AutoscaleYaxisCheckBox.Position = [35 5 122 22];
+            app.AutoscaleYaxisCheckBox.Value = true;
+
+            % Create Raw690nmunfilteredLabel
+            app.Raw690nmunfilteredLabel = uilabel(app.ResearchViewTab);
+            app.Raw690nmunfilteredLabel.Position = [45 583 213 22];
+            app.Raw690nmunfilteredLabel.Text = 'Raw 690nm [unfiltered]';
+
+            % Create ClinicalViewTab
+            app.ClinicalViewTab = uitab(app.TabViewGrou);
+            app.ClinicalViewTab.Title = 'Clinical View';
+            app.ClinicalViewTab.BackgroundColor = [0 0 0];
+
+            % Create RightSO2EditFieldLabel
+            app.RightSO2EditFieldLabel = uilabel(app.ClinicalViewTab);
+            app.RightSO2EditFieldLabel.BackgroundColor = [0 0 0];
+            app.RightSO2EditFieldLabel.HorizontalAlignment = 'center';
+            app.RightSO2EditFieldLabel.FontSize = 36;
+            app.RightSO2EditFieldLabel.FontColor = [0 1 0];
+            app.RightSO2EditFieldLabel.Position = [465 524 100 86];
+            app.RightSO2EditFieldLabel.Text = {'Right '; 'SO2'};
+
+            % Create RightSO2EditField
+            app.RightSO2EditField = uieditfield(app.ClinicalViewTab, 'numeric');
+            app.RightSO2EditField.Limits = [0 100];
+            app.RightSO2EditField.Editable = 'off';
+            app.RightSO2EditField.FontSize = 54;
+            app.RightSO2EditField.FontColor = [0 1 0];
+            app.RightSO2EditField.BackgroundColor = [0 0 0];
+            app.RightSO2EditField.Position = [563 524 136 86];
+            app.RightSO2EditField.Value = 70;
+
+            % Create LeftSO2EditFieldLabel
+            app.LeftSO2EditFieldLabel = uilabel(app.ClinicalViewTab);
+            app.LeftSO2EditFieldLabel.BackgroundColor = [0 0 0];
+            app.LeftSO2EditFieldLabel.HorizontalAlignment = 'center';
+            app.LeftSO2EditFieldLabel.FontSize = 36;
+            app.LeftSO2EditFieldLabel.FontColor = [0 1 0];
+            app.LeftSO2EditFieldLabel.Position = [477 422 77 86];
+            app.LeftSO2EditFieldLabel.Text = {'Left '; 'SO2'};
+
+            % Create LeftSO2EditField
+            app.LeftSO2EditField = uieditfield(app.ClinicalViewTab, 'numeric');
+            app.LeftSO2EditField.Limits = [0 100];
+            app.LeftSO2EditField.Editable = 'off';
+            app.LeftSO2EditField.FontSize = 54;
+            app.LeftSO2EditField.FontColor = [0 1 0];
+            app.LeftSO2EditField.BackgroundColor = [0 0 0];
+            app.LeftSO2EditField.Position = [563 422 136 86];
+            app.LeftSO2EditField.Value = 70;
+
+            % Create HeartRateEditFieldLabel
+            app.HeartRateEditFieldLabel = uilabel(app.ClinicalViewTab);
+            app.HeartRateEditFieldLabel.BackgroundColor = [0 0 0];
+            app.HeartRateEditFieldLabel.HorizontalAlignment = 'center';
+            app.HeartRateEditFieldLabel.FontSize = 36;
+            app.HeartRateEditFieldLabel.FontColor = [0 1 0];
+            app.HeartRateEditFieldLabel.Position = [465 327 93 86];
+            app.HeartRateEditFieldLabel.Text = {'Heart'; 'Rate'};
+
+            % Create HeartRateEditField
+            app.HeartRateEditField = uieditfield(app.ClinicalViewTab, 'numeric');
+            app.HeartRateEditField.Limits = [0 100];
+            app.HeartRateEditField.Editable = 'off';
+            app.HeartRateEditField.FontSize = 54;
+            app.HeartRateEditField.FontColor = [0 1 0];
+            app.HeartRateEditField.BackgroundColor = [0 0 0];
+            app.HeartRateEditField.Position = [559 327 136 86];
+
+            % Create UIAxesClinicalView
+            app.UIAxesClinicalView = uiaxes(app.ClinicalViewTab);
+            xlabel(app.UIAxesClinicalView, 'Time (s)')
+            app.UIAxesClinicalView.PlotBoxAspectRatio = [3.58730158730159 1 1];
+            app.UIAxesClinicalView.Box = 'on';
+            app.UIAxesClinicalView.XColor = [1 1 1];
+            app.UIAxesClinicalView.YColor = [1 1 1];
+            app.UIAxesClinicalView.Color = 'none';
+            app.UIAxesClinicalView.BackgroundColor = [0 0 0];
+            app.UIAxesClinicalView.Position = [1 95 708 233];
+
+            % Create ClinicalImageAxis
+            app.ClinicalImageAxis = uiaxes(app.ClinicalViewTab);
+            app.ClinicalImageAxis.AmbientLightColor = [0 0 0];
+            app.ClinicalImageAxis.GridColor = [0 0 0];
+            app.ClinicalImageAxis.MinorGridColor = [0 0 0];
+            app.ClinicalImageAxis.Box = 'on';
+            app.ClinicalImageAxis.XTick = [];
+            app.ClinicalImageAxis.YTick = [];
+            app.ClinicalImageAxis.Color = [0 0 0];
+            app.ClinicalImageAxis.BackgroundColor = [0 0 0];
+            app.ClinicalImageAxis.Position = [16 337 415 268];
+
+            % Create DefineROIsButton
+            app.DefineROIsButton = uibutton(app.ClinicalViewTab, 'push');
+            app.DefineROIsButton.BackgroundColor = [0 0 0];
+            app.DefineROIsButton.FontColor = [0 1 0];
+            app.DefineROIsButton.Position = [553 55 146 22];
+            app.DefineROIsButton.Text = 'Define ROIs';
+
+            % Create StatisticsViewTab
+            app.StatisticsViewTab = uitab(app.TabViewGrou);
+            app.StatisticsViewTab.Title = 'Statistics View';
+
+            % Create UIAxesStatsViewPlot
+            app.UIAxesStatsViewPlot = uiaxes(app.StatisticsViewTab);
+            title(app.UIAxesStatsViewPlot, 'Statistical Map: Item 1 [HbO_2]')
+            app.UIAxesStatsViewPlot.PlotBoxAspectRatio = [1.71066907775769 1 1];
+            app.UIAxesStatsViewPlot.Box = 'on';
+            app.UIAxesStatsViewPlot.XTick = [];
+            app.UIAxesStatsViewPlot.YTick = [];
+            app.UIAxesStatsViewPlot.Position = [113 306 483 303];
+
+            % Create ListBoxWhichContrast
+            app.ListBoxWhichContrast = uilistbox(app.StatisticsViewTab);
+            app.ListBoxWhichContrast.ValueChangedFcn = createCallbackFcn(app, @ListBoxWhichContrastValueChanged, true);
+            app.ListBoxWhichContrast.Position = [508 51 179 92];
+
+            % Create ThreshholdEditFieldLabel
+            app.ThreshholdEditFieldLabel = uilabel(app.StatisticsViewTab);
+            app.ThreshholdEditFieldLabel.HorizontalAlignment = 'right';
+            app.ThreshholdEditFieldLabel.Position = [488 215 73 22];
+            app.ThreshholdEditFieldLabel.Text = 'Threshhold';
+
+            % Create ThreshholdEditField
+            app.ThreshholdEditField = uieditfield(app.StatisticsViewTab, 'numeric');
+            app.ThreshholdEditField.Limits = [0 1];
+            app.ThreshholdEditField.ValueChangedFcn = createCallbackFcn(app, @ThreshholdEditFieldValueChanged, true);
+            app.ThreshholdEditField.Position = [635 215 52 22];
+            app.ThreshholdEditField.Value = 0.05;
+
+            % Create DropDownStatsPorQ
+            app.DropDownStatsPorQ = uidropdown(app.StatisticsViewTab);
+            app.DropDownStatsPorQ.Items = {'p<', 'q<'};
+            app.DropDownStatsPorQ.ValueChangedFcn = createCallbackFcn(app, @DropDownStatsPorQValueChanged, true);
+            app.DropDownStatsPorQ.Position = [578 215 40 22];
+            app.DropDownStatsPorQ.Value = 'p<';
+
+            % Create DrawModeDropDownLabel_2
+            app.DrawModeDropDownLabel_2 = uilabel(app.StatisticsViewTab);
+            app.DrawModeDropDownLabel_2.HorizontalAlignment = 'right';
+            app.DrawModeDropDownLabel_2.Position = [498 184 68 22];
+            app.DrawModeDropDownLabel_2.Text = 'Draw Mode';
+
+            % Create DrawMode4StatsView
+            app.DrawMode4StatsView = uidropdown(app.StatisticsViewTab);
+            app.DrawMode4StatsView.Items = {'2D HbO2', '2D HbR', '10-20 HbO2', '10-20 HbR', '3D HbO2', '3D HbR', 'HRF time-course'};
+            app.DrawMode4StatsView.ValueChangedFcn = createCallbackFcn(app, @DrawMode4StatsViewValueChanged, true);
+            app.DrawMode4StatsView.Position = [581 184 106 22];
+            app.DrawMode4StatsView.Value = '2D HbO2';
+
+            % Create DViewDropDownLabel
+            app.DViewDropDownLabel = uilabel(app.StatisticsViewTab);
+            app.DViewDropDownLabel.HorizontalAlignment = 'right';
+            app.DViewDropDownLabel.Enable = 'off';
+            app.DViewDropDownLabel.Position = [512 154 49 22];
+            app.DViewDropDownLabel.Text = '3D View';
+
+            % Create DViewDropDownStats3DViewAngle
+            app.DViewDropDownStats3DViewAngle = uidropdown(app.StatisticsViewTab);
+            app.DViewDropDownStats3DViewAngle.Items = {'Frontal', 'Superior', 'Occipital', 'Left Temporal', 'Right Temporal'};
+            app.DViewDropDownStats3DViewAngle.ValueChangedFcn = createCallbackFcn(app, @DViewDropDownStats3DViewAngleValueChanged, true);
+            app.DViewDropDownStats3DViewAngle.Enable = 'off';
+            app.DViewDropDownStats3DViewAngle.Position = [576 154 109 22];
+            app.DViewDropDownStats3DViewAngle.Value = 'Frontal';
+
+            % Create UIAxes
+            app.UIAxes = uiaxes(app.StatisticsViewTab);
+            title(app.UIAxes, 'Hemodynamic Response')
+            xlabel(app.UIAxes, 'Time')
+            ylabel(app.UIAxes, 'Hemoglobin')
+            app.UIAxes.PlotBoxAspectRatio = [2.73548387096774 1 1];
+            app.UIAxes.Box = 'on';
+            app.UIAxes.Position = [16 59 473 211];
+
+            % Create SDGPlotWindow
+            app.SDGPlotWindow = uiaxes(app.BrainRecordIRUIFigure);
+            app.SDGPlotWindow.XLim = [0 1];
+            app.SDGPlotWindow.YLim = [0 1];
+            app.SDGPlotWindow.Box = 'on';
+            app.SDGPlotWindow.XTick = [];
+            app.SDGPlotWindow.YTick = [];
+            app.SDGPlotWindow.Position = [726 398 393 234];
+
+            % Create DrawModeDropDownLabel
+            app.DrawModeDropDownLabel = uilabel(app.BrainRecordIRUIFigure);
+            app.DrawModeDropDownLabel.HorizontalAlignment = 'right';
+            app.DrawModeDropDownLabel.Position = [736 639 68 22];
+            app.DrawModeDropDownLabel.Text = 'Draw Mode';
+
+            % Create DrawMode4Probe
+            app.DrawMode4Probe = uidropdown(app.BrainRecordIRUIFigure);
+            app.DrawMode4Probe.Items = {'Flat View', '10-20 View', '3D View'};
+            app.DrawMode4Probe.ValueChangedFcn = createCallbackFcn(app, @DrawMode4ProbeValueChanged, true);
+            app.DrawMode4Probe.Enable = 'off';
+            app.DrawMode4Probe.Position = [819 639 100 22];
+            app.DrawMode4Probe.Value = 'Flat View';
+
+            % Create TabGroupControls
+            app.TabGroupControls = uitabgroup(app.BrainRecordIRUIFigure);
+            app.TabGroupControls.TabLocation = 'left';
+            app.TabGroupControls.Position = [730 39 385 360];
+
+            % Create DetectorsTab
+            app.DetectorsTab = uitab(app.TabGroupControls);
+            app.DetectorsTab.Title = 'Detectors';
+
+            % Create AutoGainButton
+            app.AutoGainButton = uibutton(app.DetectorsTab, 'push');
+            app.AutoGainButton.ButtonPushedFcn = createCallbackFcn(app, @AutoGainButtonPushed, true);
+            app.AutoGainButton.Position = [11 327 84 23];
+            app.AutoGainButton.Text = 'Auto-Gain';
+
+            % Create TabGroupDetectors
+            app.TabGroupDetectors = uitabgroup(app.DetectorsTab);
+            app.TabGroupDetectors.Position = [8 12 284 256];
+
+            % Create Tab1_8
+            app.Tab1_8 = uitab(app.TabGroupDetectors);
+            app.Tab1_8.Title = '1-8';
+
+            % Create PanelD_1
+            app.PanelD_1 = uipanel(app.Tab1_8);
+            app.PanelD_1.TitlePosition = 'centertop';
+            app.PanelD_1.Title = '25';
+            app.PanelD_1.Position = [1 37 30 184];
+
+            % Create LampD_1
+            app.LampD_1 = uilamp(app.PanelD_1);
+            app.LampD_1.Position = [8 144 15 15];
+
+            % Create SliderD_1
+            app.SliderD_1 = uislider(app.PanelD_1);
+            app.SliderD_1.MajorTicks = [];
+            app.SliderD_1.Orientation = 'vertical';
+            app.SliderD_1.FontSize = 7;
+            app.SliderD_1.Position = [14 41 3 85];
+
+            % Create EditFieldD_1
+            app.EditFieldD_1 = uieditfield(app.PanelD_1, 'numeric');
+            app.EditFieldD_1.Limits = [0 100];
+            app.EditFieldD_1.FontSize = 9;
+            app.EditFieldD_1.Position = [2 9 24 22];
+            app.EditFieldD_1.Value = 100;
+
+            % Create PanelD_2
+            app.PanelD_2 = uipanel(app.Tab1_8);
+            app.PanelD_2.TitlePosition = 'centertop';
+            app.PanelD_2.Title = '25';
+            app.PanelD_2.Position = [37 37 30 184];
+
+            % Create LampD_2
+            app.LampD_2 = uilamp(app.PanelD_2);
+            app.LampD_2.Position = [8 144 15 15];
+
+            % Create SliderD_2
+            app.SliderD_2 = uislider(app.PanelD_2);
+            app.SliderD_2.MajorTicks = [];
+            app.SliderD_2.Orientation = 'vertical';
+            app.SliderD_2.FontSize = 7;
+            app.SliderD_2.Position = [14 41 3 85];
+
+            % Create EditFieldD_2
+            app.EditFieldD_2 = uieditfield(app.PanelD_2, 'numeric');
+            app.EditFieldD_2.Limits = [0 100];
+            app.EditFieldD_2.FontSize = 9;
+            app.EditFieldD_2.Position = [2 9 24 22];
+            app.EditFieldD_2.Value = 100;
+
+            % Create PanelD_3
+            app.PanelD_3 = uipanel(app.Tab1_8);
+            app.PanelD_3.TitlePosition = 'centertop';
+            app.PanelD_3.Title = '25';
+            app.PanelD_3.Position = [73 37 30 184];
+
+            % Create LampD_3
+            app.LampD_3 = uilamp(app.PanelD_3);
+            app.LampD_3.Position = [8 144 15 15];
+
+            % Create SliderD_3
+            app.SliderD_3 = uislider(app.PanelD_3);
+            app.SliderD_3.MajorTicks = [];
+            app.SliderD_3.Orientation = 'vertical';
+            app.SliderD_3.FontSize = 7;
+            app.SliderD_3.Position = [14 41 3 85];
+
+            % Create EditFieldD_3
+            app.EditFieldD_3 = uieditfield(app.PanelD_3, 'numeric');
+            app.EditFieldD_3.Limits = [0 100];
+            app.EditFieldD_3.FontSize = 9;
+            app.EditFieldD_3.Position = [2 9 24 22];
+            app.EditFieldD_3.Value = 100;
+
+            % Create PanelD_4
+            app.PanelD_4 = uipanel(app.Tab1_8);
+            app.PanelD_4.TitlePosition = 'centertop';
+            app.PanelD_4.Title = '25';
+            app.PanelD_4.Position = [108 37 30 184];
+
+            % Create LampD_4
+            app.LampD_4 = uilamp(app.PanelD_4);
+            app.LampD_4.Position = [8 144 15 15];
+
+            % Create SliderD_4
+            app.SliderD_4 = uislider(app.PanelD_4);
+            app.SliderD_4.MajorTicks = [];
+            app.SliderD_4.Orientation = 'vertical';
+            app.SliderD_4.FontSize = 7;
+            app.SliderD_4.Position = [14 41 3 85];
+
+            % Create EditFieldD_4
+            app.EditFieldD_4 = uieditfield(app.PanelD_4, 'numeric');
+            app.EditFieldD_4.Limits = [0 100];
+            app.EditFieldD_4.FontSize = 9;
+            app.EditFieldD_4.Position = [2 9 24 22];
+            app.EditFieldD_4.Value = 100;
+
+            % Create PanelD_5
+            app.PanelD_5 = uipanel(app.Tab1_8);
+            app.PanelD_5.TitlePosition = 'centertop';
+            app.PanelD_5.Title = '25';
+            app.PanelD_5.Position = [143 37 30 184];
+
+            % Create LampD_5
+            app.LampD_5 = uilamp(app.PanelD_5);
+            app.LampD_5.Position = [8 144 15 15];
+
+            % Create SliderD_5
+            app.SliderD_5 = uislider(app.PanelD_5);
+            app.SliderD_5.MajorTicks = [];
+            app.SliderD_5.Orientation = 'vertical';
+            app.SliderD_5.FontSize = 7;
+            app.SliderD_5.Position = [14 41 3 85];
+
+            % Create EditFieldD_5
+            app.EditFieldD_5 = uieditfield(app.PanelD_5, 'numeric');
+            app.EditFieldD_5.Limits = [0 100];
+            app.EditFieldD_5.FontSize = 9;
+            app.EditFieldD_5.Position = [2 9 24 22];
+            app.EditFieldD_5.Value = 100;
+
+            % Create PanelD_6
+            app.PanelD_6 = uipanel(app.Tab1_8);
+            app.PanelD_6.TitlePosition = 'centertop';
+            app.PanelD_6.Title = '25';
+            app.PanelD_6.Position = [178 37 30 184];
+
+            % Create LampD_6
+            app.LampD_6 = uilamp(app.PanelD_6);
+            app.LampD_6.Position = [8 144 15 15];
+
+            % Create SliderD_6
+            app.SliderD_6 = uislider(app.PanelD_6);
+            app.SliderD_6.MajorTicks = [];
+            app.SliderD_6.Orientation = 'vertical';
+            app.SliderD_6.FontSize = 7;
+            app.SliderD_6.Position = [14 41 3 85];
+
+            % Create EditFieldD_6
+            app.EditFieldD_6 = uieditfield(app.PanelD_6, 'numeric');
+            app.EditFieldD_6.Limits = [0 100];
+            app.EditFieldD_6.FontSize = 9;
+            app.EditFieldD_6.Position = [2 9 24 22];
+            app.EditFieldD_6.Value = 100;
+
+            % Create PanelD_7
+            app.PanelD_7 = uipanel(app.Tab1_8);
+            app.PanelD_7.TitlePosition = 'centertop';
+            app.PanelD_7.Title = '25';
+            app.PanelD_7.Position = [213 37 30 184];
+
+            % Create LampD_7
+            app.LampD_7 = uilamp(app.PanelD_7);
+            app.LampD_7.Position = [8 144 15 15];
+
+            % Create SliderD_7
+            app.SliderD_7 = uislider(app.PanelD_7);
+            app.SliderD_7.MajorTicks = [];
+            app.SliderD_7.Orientation = 'vertical';
+            app.SliderD_7.FontSize = 7;
+            app.SliderD_7.Position = [14 41 3 85];
+
+            % Create EditFieldD_7
+            app.EditFieldD_7 = uieditfield(app.PanelD_7, 'numeric');
+            app.EditFieldD_7.Limits = [0 100];
+            app.EditFieldD_7.FontSize = 9;
+            app.EditFieldD_7.Position = [2 9 24 22];
+            app.EditFieldD_7.Value = 100;
+
+            % Create PanelD_8
+            app.PanelD_8 = uipanel(app.Tab1_8);
+            app.PanelD_8.TitlePosition = 'centertop';
+            app.PanelD_8.Title = '25';
+            app.PanelD_8.Position = [248 37 30 184];
+
+            % Create LampD_8
+            app.LampD_8 = uilamp(app.PanelD_8);
+            app.LampD_8.Position = [8 144 15 15];
+
+            % Create SliderD_8
+            app.SliderD_8 = uislider(app.PanelD_8);
+            app.SliderD_8.MajorTicks = [];
+            app.SliderD_8.Orientation = 'vertical';
+            app.SliderD_8.FontSize = 7;
+            app.SliderD_8.Position = [14 41 3 85];
+
+            % Create EditFieldD_8
+            app.EditFieldD_8 = uieditfield(app.PanelD_8, 'numeric');
+            app.EditFieldD_8.Limits = [0 100];
+            app.EditFieldD_8.FontSize = 9;
+            app.EditFieldD_8.Position = [2 9 24 22];
+            app.EditFieldD_8.Value = 100;
+
+            % Create SetAllGainEditFieldLabel
+            app.SetAllGainEditFieldLabel = uilabel(app.Tab1_8);
+            app.SetAllGainEditFieldLabel.HorizontalAlignment = 'right';
+            app.SetAllGainEditFieldLabel.Position = [157 8 68 22];
+            app.SetAllGainEditFieldLabel.Text = 'Set All Gain';
+
+            % Create SetAllGainEditField
+            app.SetAllGainEditField = uieditfield(app.Tab1_8, 'numeric');
+            app.SetAllGainEditField.Limits = [0 255];
+            app.SetAllGainEditField.RoundFractionalValues = 'on';
+            app.SetAllGainEditField.ValueChangedFcn = createCallbackFcn(app, @SetAllGainEditFieldValueChanged, true);
+            app.SetAllGainEditField.Position = [230 8 45 22];
+
+            % Create Tab9_16
+            app.Tab9_16 = uitab(app.TabGroupDetectors);
+            app.Tab9_16.Title = '9-16';
+
+            % Create PanelD_9
+            app.PanelD_9 = uipanel(app.Tab9_16);
+            app.PanelD_9.TitlePosition = 'centertop';
+            app.PanelD_9.Title = '25';
+            app.PanelD_9.Position = [1 45 30 176];
+
+            % Create LampD_9
+            app.LampD_9 = uilamp(app.PanelD_9);
+            app.LampD_9.Position = [8 136 15 15];
+
+            % Create SliderD_9
+            app.SliderD_9 = uislider(app.PanelD_9);
+            app.SliderD_9.MajorTicks = [];
+            app.SliderD_9.Orientation = 'vertical';
+            app.SliderD_9.FontSize = 7;
+            app.SliderD_9.Position = [14 33 3 85];
+
+            % Create EditFieldD_9
+            app.EditFieldD_9 = uieditfield(app.PanelD_9, 'numeric');
+            app.EditFieldD_9.Limits = [0 100];
+            app.EditFieldD_9.FontSize = 9;
+            app.EditFieldD_9.Position = [2 1 24 22];
+            app.EditFieldD_9.Value = 100;
+
+            % Create PanelD_10
+            app.PanelD_10 = uipanel(app.Tab9_16);
+            app.PanelD_10.TitlePosition = 'centertop';
+            app.PanelD_10.Title = '25';
+            app.PanelD_10.Position = [37 45 30 176];
+
+            % Create LampD_10
+            app.LampD_10 = uilamp(app.PanelD_10);
+            app.LampD_10.Position = [8 136 15 15];
+
+            % Create SliderD_10
+            app.SliderD_10 = uislider(app.PanelD_10);
+            app.SliderD_10.MajorTicks = [];
+            app.SliderD_10.Orientation = 'vertical';
+            app.SliderD_10.FontSize = 7;
+            app.SliderD_10.Position = [14 33 3 85];
+
+            % Create EditFieldD_10
+            app.EditFieldD_10 = uieditfield(app.PanelD_10, 'numeric');
+            app.EditFieldD_10.Limits = [0 100];
+            app.EditFieldD_10.FontSize = 9;
+            app.EditFieldD_10.Position = [2 1 24 22];
+            app.EditFieldD_10.Value = 100;
+
+            % Create PanelD_11
+            app.PanelD_11 = uipanel(app.Tab9_16);
+            app.PanelD_11.TitlePosition = 'centertop';
+            app.PanelD_11.Title = '25';
+            app.PanelD_11.Position = [73 45 30 176];
+
+            % Create LampD_11
+            app.LampD_11 = uilamp(app.PanelD_11);
+            app.LampD_11.Position = [8 136 15 15];
+
+            % Create SliderD_11
+            app.SliderD_11 = uislider(app.PanelD_11);
+            app.SliderD_11.MajorTicks = [];
+            app.SliderD_11.Orientation = 'vertical';
+            app.SliderD_11.FontSize = 7;
+            app.SliderD_11.Position = [14 33 3 85];
+
+            % Create EditFieldD_11
+            app.EditFieldD_11 = uieditfield(app.PanelD_11, 'numeric');
+            app.EditFieldD_11.Limits = [0 100];
+            app.EditFieldD_11.FontSize = 9;
+            app.EditFieldD_11.Position = [2 1 24 22];
+            app.EditFieldD_11.Value = 100;
+
+            % Create PanelD_12
+            app.PanelD_12 = uipanel(app.Tab9_16);
+            app.PanelD_12.TitlePosition = 'centertop';
+            app.PanelD_12.Title = '25';
+            app.PanelD_12.Position = [108 45 30 176];
+
+            % Create LampD_12
+            app.LampD_12 = uilamp(app.PanelD_12);
+            app.LampD_12.Position = [8 136 15 15];
+
+            % Create SliderD_12
+            app.SliderD_12 = uislider(app.PanelD_12);
+            app.SliderD_12.MajorTicks = [];
+            app.SliderD_12.Orientation = 'vertical';
+            app.SliderD_12.FontSize = 7;
+            app.SliderD_12.Position = [14 33 3 85];
+
+            % Create EditFieldD_12
+            app.EditFieldD_12 = uieditfield(app.PanelD_12, 'numeric');
+            app.EditFieldD_12.Limits = [0 100];
+            app.EditFieldD_12.FontSize = 9;
+            app.EditFieldD_12.Position = [2 1 24 22];
+            app.EditFieldD_12.Value = 100;
+
+            % Create PanelD_13
+            app.PanelD_13 = uipanel(app.Tab9_16);
+            app.PanelD_13.TitlePosition = 'centertop';
+            app.PanelD_13.Title = '25';
+            app.PanelD_13.Position = [143 45 30 176];
+
+            % Create LampD_13
+            app.LampD_13 = uilamp(app.PanelD_13);
+            app.LampD_13.Position = [8 136 15 15];
+
+            % Create SliderD_13
+            app.SliderD_13 = uislider(app.PanelD_13);
+            app.SliderD_13.MajorTicks = [];
+            app.SliderD_13.Orientation = 'vertical';
+            app.SliderD_13.FontSize = 7;
+            app.SliderD_13.Position = [14 33 3 85];
+
+            % Create EditFieldD_13
+            app.EditFieldD_13 = uieditfield(app.PanelD_13, 'numeric');
+            app.EditFieldD_13.Limits = [0 100];
+            app.EditFieldD_13.FontSize = 9;
+            app.EditFieldD_13.Position = [2 1 24 22];
+            app.EditFieldD_13.Value = 100;
+
+            % Create PanelD_14
+            app.PanelD_14 = uipanel(app.Tab9_16);
+            app.PanelD_14.TitlePosition = 'centertop';
+            app.PanelD_14.Title = '25';
+            app.PanelD_14.Position = [178 45 30 176];
+
+            % Create LampD_14
+            app.LampD_14 = uilamp(app.PanelD_14);
+            app.LampD_14.Position = [8 136 15 15];
+
+            % Create SliderD_14
+            app.SliderD_14 = uislider(app.PanelD_14);
+            app.SliderD_14.MajorTicks = [];
+            app.SliderD_14.Orientation = 'vertical';
+            app.SliderD_14.FontSize = 7;
+            app.SliderD_14.Position = [14 33 3 85];
+
+            % Create EditFieldD_14
+            app.EditFieldD_14 = uieditfield(app.PanelD_14, 'numeric');
+            app.EditFieldD_14.Limits = [0 100];
+            app.EditFieldD_14.FontSize = 9;
+            app.EditFieldD_14.Position = [2 1 24 22];
+            app.EditFieldD_14.Value = 100;
+
+            % Create PanelD_15
+            app.PanelD_15 = uipanel(app.Tab9_16);
+            app.PanelD_15.TitlePosition = 'centertop';
+            app.PanelD_15.Title = '25';
+            app.PanelD_15.Position = [213 45 30 176];
+
+            % Create LampD_15
+            app.LampD_15 = uilamp(app.PanelD_15);
+            app.LampD_15.Position = [8 136 15 15];
+
+            % Create SliderD_15
+            app.SliderD_15 = uislider(app.PanelD_15);
+            app.SliderD_15.MajorTicks = [];
+            app.SliderD_15.Orientation = 'vertical';
+            app.SliderD_15.FontSize = 7;
+            app.SliderD_15.Position = [14 33 3 85];
+
+            % Create EditFieldD_15
+            app.EditFieldD_15 = uieditfield(app.PanelD_15, 'numeric');
+            app.EditFieldD_15.Limits = [0 100];
+            app.EditFieldD_15.FontSize = 9;
+            app.EditFieldD_15.Position = [2 1 24 22];
+            app.EditFieldD_15.Value = 100;
+
+            % Create PanelD_16
+            app.PanelD_16 = uipanel(app.Tab9_16);
+            app.PanelD_16.TitlePosition = 'centertop';
+            app.PanelD_16.Title = '25';
+            app.PanelD_16.Position = [248 45 30 176];
+
+            % Create LampD_16
+            app.LampD_16 = uilamp(app.PanelD_16);
+            app.LampD_16.Position = [8 136 15 15];
+
+            % Create SliderD_16
+            app.SliderD_16 = uislider(app.PanelD_16);
+            app.SliderD_16.MajorTicks = [];
+            app.SliderD_16.Orientation = 'vertical';
+            app.SliderD_16.FontSize = 7;
+            app.SliderD_16.Position = [14 33 3 85];
+
+            % Create EditFieldD_16
+            app.EditFieldD_16 = uieditfield(app.PanelD_16, 'numeric');
+            app.EditFieldD_16.Limits = [0 100];
+            app.EditFieldD_16.FontSize = 9;
+            app.EditFieldD_16.Position = [2 1 24 22];
+            app.EditFieldD_16.Value = 100;
+
+            % Create Tab17_24
+            app.Tab17_24 = uitab(app.TabGroupDetectors);
+            app.Tab17_24.Title = '17-24';
+
+            % Create PanelD_17
+            app.PanelD_17 = uipanel(app.Tab17_24);
+            app.PanelD_17.TitlePosition = 'centertop';
+            app.PanelD_17.Title = '25';
+            app.PanelD_17.Position = [1 45 30 176];
+
+            % Create LampD_17
+            app.LampD_17 = uilamp(app.PanelD_17);
+            app.LampD_17.Position = [8 136 15 15];
+
+            % Create SliderD_17
+            app.SliderD_17 = uislider(app.PanelD_17);
+            app.SliderD_17.MajorTicks = [];
+            app.SliderD_17.Orientation = 'vertical';
+            app.SliderD_17.FontSize = 7;
+            app.SliderD_17.Position = [14 33 3 85];
+
+            % Create EditFieldD_17
+            app.EditFieldD_17 = uieditfield(app.PanelD_17, 'numeric');
+            app.EditFieldD_17.Limits = [0 100];
+            app.EditFieldD_17.FontSize = 9;
+            app.EditFieldD_17.Position = [2 1 24 22];
+            app.EditFieldD_17.Value = 100;
+
+            % Create PanelD_18
+            app.PanelD_18 = uipanel(app.Tab17_24);
+            app.PanelD_18.TitlePosition = 'centertop';
+            app.PanelD_18.Title = '25';
+            app.PanelD_18.Position = [37 45 30 176];
+
+            % Create LampD_18
+            app.LampD_18 = uilamp(app.PanelD_18);
+            app.LampD_18.Position = [8 136 15 15];
+
+            % Create SliderD_18
+            app.SliderD_18 = uislider(app.PanelD_18);
+            app.SliderD_18.MajorTicks = [];
+            app.SliderD_18.Orientation = 'vertical';
+            app.SliderD_18.FontSize = 7;
+            app.SliderD_18.Position = [14 33 3 85];
+
+            % Create EditFieldD_18
+            app.EditFieldD_18 = uieditfield(app.PanelD_18, 'numeric');
+            app.EditFieldD_18.Limits = [0 100];
+            app.EditFieldD_18.FontSize = 9;
+            app.EditFieldD_18.Position = [2 1 24 22];
+            app.EditFieldD_18.Value = 100;
+
+            % Create PanelD_19
+            app.PanelD_19 = uipanel(app.Tab17_24);
+            app.PanelD_19.TitlePosition = 'centertop';
+            app.PanelD_19.Title = '25';
+            app.PanelD_19.Position = [73 45 30 176];
+
+            % Create LampD_19
+            app.LampD_19 = uilamp(app.PanelD_19);
+            app.LampD_19.Position = [8 136 15 15];
+
+            % Create SliderD_19
+            app.SliderD_19 = uislider(app.PanelD_19);
+            app.SliderD_19.MajorTicks = [];
+            app.SliderD_19.Orientation = 'vertical';
+            app.SliderD_19.FontSize = 7;
+            app.SliderD_19.Position = [14 33 3 85];
+
+            % Create EditFieldD_19
+            app.EditFieldD_19 = uieditfield(app.PanelD_19, 'numeric');
+            app.EditFieldD_19.Limits = [0 100];
+            app.EditFieldD_19.FontSize = 9;
+            app.EditFieldD_19.Position = [2 1 24 22];
+            app.EditFieldD_19.Value = 100;
+
+            % Create PanelD_20
+            app.PanelD_20 = uipanel(app.Tab17_24);
+            app.PanelD_20.TitlePosition = 'centertop';
+            app.PanelD_20.Title = '25';
+            app.PanelD_20.Position = [108 45 30 176];
+
+            % Create LampD_20
+            app.LampD_20 = uilamp(app.PanelD_20);
+            app.LampD_20.Position = [8 136 15 15];
+
+            % Create SliderD_20
+            app.SliderD_20 = uislider(app.PanelD_20);
+            app.SliderD_20.MajorTicks = [];
+            app.SliderD_20.Orientation = 'vertical';
+            app.SliderD_20.FontSize = 7;
+            app.SliderD_20.Position = [14 33 3 85];
+
+            % Create EditFieldD_20
+            app.EditFieldD_20 = uieditfield(app.PanelD_20, 'numeric');
+            app.EditFieldD_20.Limits = [0 100];
+            app.EditFieldD_20.FontSize = 9;
+            app.EditFieldD_20.Position = [2 1 24 22];
+            app.EditFieldD_20.Value = 100;
+
+            % Create PanelD_21
+            app.PanelD_21 = uipanel(app.Tab17_24);
+            app.PanelD_21.TitlePosition = 'centertop';
+            app.PanelD_21.Title = '25';
+            app.PanelD_21.Position = [143 45 30 176];
+
+            % Create LampD_21
+            app.LampD_21 = uilamp(app.PanelD_21);
+            app.LampD_21.Position = [8 136 15 15];
+
+            % Create SliderD_21
+            app.SliderD_21 = uislider(app.PanelD_21);
+            app.SliderD_21.MajorTicks = [];
+            app.SliderD_21.Orientation = 'vertical';
+            app.SliderD_21.FontSize = 7;
+            app.SliderD_21.Position = [14 33 3 85];
+
+            % Create EditFieldD_21
+            app.EditFieldD_21 = uieditfield(app.PanelD_21, 'numeric');
+            app.EditFieldD_21.Limits = [0 100];
+            app.EditFieldD_21.FontSize = 9;
+            app.EditFieldD_21.Position = [2 1 24 22];
+            app.EditFieldD_21.Value = 100;
+
+            % Create PanelD_22
+            app.PanelD_22 = uipanel(app.Tab17_24);
+            app.PanelD_22.TitlePosition = 'centertop';
+            app.PanelD_22.Title = '25';
+            app.PanelD_22.Position = [178 45 30 176];
+
+            % Create LampD_22
+            app.LampD_22 = uilamp(app.PanelD_22);
+            app.LampD_22.Position = [8 136 15 15];
+
+            % Create SliderD_22
+            app.SliderD_22 = uislider(app.PanelD_22);
+            app.SliderD_22.MajorTicks = [];
+            app.SliderD_22.Orientation = 'vertical';
+            app.SliderD_22.FontSize = 7;
+            app.SliderD_22.Position = [14 33 3 85];
+
+            % Create EditFieldD_22
+            app.EditFieldD_22 = uieditfield(app.PanelD_22, 'numeric');
+            app.EditFieldD_22.Limits = [0 100];
+            app.EditFieldD_22.FontSize = 9;
+            app.EditFieldD_22.Position = [2 1 24 22];
+            app.EditFieldD_22.Value = 100;
+
+            % Create PanelD_23
+            app.PanelD_23 = uipanel(app.Tab17_24);
+            app.PanelD_23.TitlePosition = 'centertop';
+            app.PanelD_23.Title = '25';
+            app.PanelD_23.Position = [213 45 30 176];
+
+            % Create LampD_23
+            app.LampD_23 = uilamp(app.PanelD_23);
+            app.LampD_23.Position = [8 136 15 15];
+
+            % Create SliderD_23
+            app.SliderD_23 = uislider(app.PanelD_23);
+            app.SliderD_23.MajorTicks = [];
+            app.SliderD_23.Orientation = 'vertical';
+            app.SliderD_23.FontSize = 7;
+            app.SliderD_23.Position = [14 33 3 85];
+
+            % Create EditFieldD_23
+            app.EditFieldD_23 = uieditfield(app.PanelD_23, 'numeric');
+            app.EditFieldD_23.Limits = [0 100];
+            app.EditFieldD_23.FontSize = 9;
+            app.EditFieldD_23.Position = [2 1 24 22];
+            app.EditFieldD_23.Value = 100;
+
+            % Create PanelD_24
+            app.PanelD_24 = uipanel(app.Tab17_24);
+            app.PanelD_24.TitlePosition = 'centertop';
+            app.PanelD_24.Title = '25';
+            app.PanelD_24.Position = [248 45 30 176];
+
+            % Create LampD_24
+            app.LampD_24 = uilamp(app.PanelD_24);
+            app.LampD_24.Position = [8 136 15 15];
+
+            % Create SliderD_24
+            app.SliderD_24 = uislider(app.PanelD_24);
+            app.SliderD_24.MajorTicks = [];
+            app.SliderD_24.Orientation = 'vertical';
+            app.SliderD_24.FontSize = 7;
+            app.SliderD_24.Position = [14 33 3 85];
+
+            % Create EditFieldD_24
+            app.EditFieldD_24 = uieditfield(app.PanelD_24, 'numeric');
+            app.EditFieldD_24.Limits = [0 100];
+            app.EditFieldD_24.FontSize = 9;
+            app.EditFieldD_24.Position = [2 1 24 22];
+            app.EditFieldD_24.Value = 100;
+
+            % Create Tab25_32
+            app.Tab25_32 = uitab(app.TabGroupDetectors);
+            app.Tab25_32.Title = '25-32';
+
+            % Create PanelD_25
+            app.PanelD_25 = uipanel(app.Tab25_32);
+            app.PanelD_25.TitlePosition = 'centertop';
+            app.PanelD_25.Title = '25';
+            app.PanelD_25.Position = [1 45 30 176];
+
+            % Create LampD_25
+            app.LampD_25 = uilamp(app.PanelD_25);
+            app.LampD_25.Position = [8 136 15 15];
+
+            % Create SliderD_25
+            app.SliderD_25 = uislider(app.PanelD_25);
+            app.SliderD_25.MajorTicks = [];
+            app.SliderD_25.Orientation = 'vertical';
+            app.SliderD_25.FontSize = 7;
+            app.SliderD_25.Position = [14 33 3 85];
+
+            % Create EditFieldD_25
+            app.EditFieldD_25 = uieditfield(app.PanelD_25, 'numeric');
+            app.EditFieldD_25.Limits = [0 100];
+            app.EditFieldD_25.FontSize = 9;
+            app.EditFieldD_25.Position = [2 1 24 22];
+            app.EditFieldD_25.Value = 100;
+
+            % Create PanelD_26
+            app.PanelD_26 = uipanel(app.Tab25_32);
+            app.PanelD_26.TitlePosition = 'centertop';
+            app.PanelD_26.Title = '25';
+            app.PanelD_26.Position = [37 45 30 176];
+
+            % Create LampD_26
+            app.LampD_26 = uilamp(app.PanelD_26);
+            app.LampD_26.Position = [8 136 15 15];
+
+            % Create SliderD_26
+            app.SliderD_26 = uislider(app.PanelD_26);
+            app.SliderD_26.MajorTicks = [];
+            app.SliderD_26.Orientation = 'vertical';
+            app.SliderD_26.FontSize = 7;
+            app.SliderD_26.Position = [14 33 3 85];
+
+            % Create EditFieldD_26
+            app.EditFieldD_26 = uieditfield(app.PanelD_26, 'numeric');
+            app.EditFieldD_26.Limits = [0 100];
+            app.EditFieldD_26.FontSize = 9;
+            app.EditFieldD_26.Position = [2 1 24 22];
+            app.EditFieldD_26.Value = 100;
+
+            % Create PanelD_27
+            app.PanelD_27 = uipanel(app.Tab25_32);
+            app.PanelD_27.TitlePosition = 'centertop';
+            app.PanelD_27.Title = '25';
+            app.PanelD_27.Position = [73 45 30 176];
+
+            % Create LampD_27
+            app.LampD_27 = uilamp(app.PanelD_27);
+            app.LampD_27.Position = [8 136 15 15];
+
+            % Create SliderD_27
+            app.SliderD_27 = uislider(app.PanelD_27);
+            app.SliderD_27.MajorTicks = [];
+            app.SliderD_27.Orientation = 'vertical';
+            app.SliderD_27.FontSize = 7;
+            app.SliderD_27.Position = [14 33 3 85];
+
+            % Create EditFieldD_27
+            app.EditFieldD_27 = uieditfield(app.PanelD_27, 'numeric');
+            app.EditFieldD_27.Limits = [0 100];
+            app.EditFieldD_27.FontSize = 9;
+            app.EditFieldD_27.Position = [2 1 24 22];
+            app.EditFieldD_27.Value = 100;
+
+            % Create PanelD_28
+            app.PanelD_28 = uipanel(app.Tab25_32);
+            app.PanelD_28.TitlePosition = 'centertop';
+            app.PanelD_28.Title = '25';
+            app.PanelD_28.Position = [108 45 30 176];
+
+            % Create LampD_28
+            app.LampD_28 = uilamp(app.PanelD_28);
+            app.LampD_28.Position = [8 136 15 15];
+
+            % Create SliderD_28
+            app.SliderD_28 = uislider(app.PanelD_28);
+            app.SliderD_28.MajorTicks = [];
+            app.SliderD_28.Orientation = 'vertical';
+            app.SliderD_28.FontSize = 7;
+            app.SliderD_28.Position = [14 33 3 85];
+
+            % Create EditFieldD_28
+            app.EditFieldD_28 = uieditfield(app.PanelD_28, 'numeric');
+            app.EditFieldD_28.Limits = [0 100];
+            app.EditFieldD_28.FontSize = 9;
+            app.EditFieldD_28.Position = [2 1 24 22];
+            app.EditFieldD_28.Value = 100;
+
+            % Create PanelD_29
+            app.PanelD_29 = uipanel(app.Tab25_32);
+            app.PanelD_29.TitlePosition = 'centertop';
+            app.PanelD_29.Title = '25';
+            app.PanelD_29.Position = [143 45 30 176];
+
+            % Create LampD_29
+            app.LampD_29 = uilamp(app.PanelD_29);
+            app.LampD_29.Position = [8 136 15 15];
+
+            % Create SliderD_29
+            app.SliderD_29 = uislider(app.PanelD_29);
+            app.SliderD_29.MajorTicks = [];
+            app.SliderD_29.Orientation = 'vertical';
+            app.SliderD_29.FontSize = 7;
+            app.SliderD_29.Position = [14 33 3 85];
+
+            % Create EditFieldD_29
+            app.EditFieldD_29 = uieditfield(app.PanelD_29, 'numeric');
+            app.EditFieldD_29.Limits = [0 100];
+            app.EditFieldD_29.FontSize = 9;
+            app.EditFieldD_29.Position = [2 1 24 22];
+            app.EditFieldD_29.Value = 100;
+
+            % Create PanelD_30
+            app.PanelD_30 = uipanel(app.Tab25_32);
+            app.PanelD_30.TitlePosition = 'centertop';
+            app.PanelD_30.Title = '25';
+            app.PanelD_30.Position = [178 45 30 176];
+
+            % Create LampD_30
+            app.LampD_30 = uilamp(app.PanelD_30);
+            app.LampD_30.Position = [8 136 15 15];
+
+            % Create SliderD_30
+            app.SliderD_30 = uislider(app.PanelD_30);
+            app.SliderD_30.MajorTicks = [];
+            app.SliderD_30.Orientation = 'vertical';
+            app.SliderD_30.FontSize = 7;
+            app.SliderD_30.Position = [14 33 3 85];
+
+            % Create EditFieldD_30
+            app.EditFieldD_30 = uieditfield(app.PanelD_30, 'numeric');
+            app.EditFieldD_30.Limits = [0 100];
+            app.EditFieldD_30.FontSize = 9;
+            app.EditFieldD_30.Position = [2 1 24 22];
+            app.EditFieldD_30.Value = 100;
+
+            % Create PanelD_31
+            app.PanelD_31 = uipanel(app.Tab25_32);
+            app.PanelD_31.TitlePosition = 'centertop';
+            app.PanelD_31.Title = '25';
+            app.PanelD_31.Position = [213 45 30 176];
+
+            % Create LampD_31
+            app.LampD_31 = uilamp(app.PanelD_31);
+            app.LampD_31.Position = [8 136 15 15];
+
+            % Create SliderD_31
+            app.SliderD_31 = uislider(app.PanelD_31);
+            app.SliderD_31.MajorTicks = [];
+            app.SliderD_31.Orientation = 'vertical';
+            app.SliderD_31.FontSize = 7;
+            app.SliderD_31.Position = [14 33 3 85];
+
+            % Create EditFieldD_31
+            app.EditFieldD_31 = uieditfield(app.PanelD_31, 'numeric');
+            app.EditFieldD_31.Limits = [0 100];
+            app.EditFieldD_31.FontSize = 9;
+            app.EditFieldD_31.Position = [2 1 24 22];
+            app.EditFieldD_31.Value = 100;
+
+            % Create PanelD_32
+            app.PanelD_32 = uipanel(app.Tab25_32);
+            app.PanelD_32.TitlePosition = 'centertop';
+            app.PanelD_32.Title = '25';
+            app.PanelD_32.Position = [248 45 30 176];
+
+            % Create LampD_32
+            app.LampD_32 = uilamp(app.PanelD_32);
+            app.LampD_32.Position = [8 136 15 15];
+
+            % Create SliderD_32
+            app.SliderD_32 = uislider(app.PanelD_32);
+            app.SliderD_32.MajorTicks = [];
+            app.SliderD_32.Orientation = 'vertical';
+            app.SliderD_32.FontSize = 7;
+            app.SliderD_32.Position = [14 33 3 85];
+
+            % Create EditFieldD_32
+            app.EditFieldD_32 = uieditfield(app.PanelD_32, 'numeric');
+            app.EditFieldD_32.Limits = [0 100];
+            app.EditFieldD_32.FontSize = 9;
+            app.EditFieldD_32.Position = [2 1 24 22];
+            app.EditFieldD_32.Value = 100;
+
+            % Create ShowNoiseMapButton
+            app.ShowNoiseMapButton = uibutton(app.DetectorsTab, 'push');
+            app.ShowNoiseMapButton.ButtonPushedFcn = createCallbackFcn(app, @ShowNoiseMapButtonPushed, true);
+            app.ShowNoiseMapButton.Position = [181 278 107 22];
+            app.ShowNoiseMapButton.Text = 'Show Noise Map';
+
+            % Create SourcesTab
+            app.SourcesTab = uitab(app.TabGroupControls);
+            app.SourcesTab.Title = 'Sources';
+
+            % Create AutoAdjustButton
+            app.AutoAdjustButton = uibutton(app.SourcesTab, 'push');
+            app.AutoAdjustButton.ButtonPushedFcn = createCallbackFcn(app, @AutoAdjustButtonPushed, true);
+            app.AutoAdjustButton.Position = [13 327 100 22];
+            app.AutoAdjustButton.Text = 'Auto-Adjust';
+
+            % Create TabGroup
+            app.TabGroup = uitabgroup(app.SourcesTab);
+            app.TabGroup.TabLocation = 'left';
+            app.TabGroup.Position = [13 37 278 265];
+
+            % Create Tab
+            app.Tab = uitab(app.TabGroup);
+            app.Tab.Title = '1-4';
+
+            % Create Src1Panel
+            app.Src1Panel = uipanel(app.Tab);
+            app.Src1Panel.Title = 'Src-1';
+            app.Src1Panel.Position = [11 205 196 49];
+
+            % Create SpinnerS_1
+            app.SpinnerS_1 = uispinner(app.Src1Panel);
+            app.SpinnerS_1.Position = [50 7 44 22];
+
+            % Create SpinnerS_2
+            app.SpinnerS_2 = uispinner(app.Src1Panel);
+            app.SpinnerS_2.Position = [145 7 44 22];
+
+            % Create SwitchS_1
+            app.SwitchS_1 = uiswitch(app.Src1Panel, 'rocker');
+            app.SwitchS_1.FontSize = 0.1;
+            app.SwitchS_1.Position = [34 8 9 20];
+
+            % Create SwitchS_2
+            app.SwitchS_2 = uiswitch(app.Src1Panel, 'rocker');
+            app.SwitchS_2.FontSize = 0.1;
+            app.SwitchS_2.Position = [130 8 9 20];
+
+            % Create LampS_1
+            app.LampS_1 = uilamp(app.Src1Panel);
+            app.LampS_1.Position = [6 8 20 20];
+
+            % Create LampS_2
+            app.LampS_2 = uilamp(app.Src1Panel);
+            app.LampS_2.Position = [103 8 20 20];
+
+            % Create Src2Panel
+            app.Src2Panel = uipanel(app.Tab);
+            app.Src2Panel.Title = 'Src-2';
+            app.Src2Panel.Position = [11 144 196 49];
+
+            % Create SpinnerS_3
+            app.SpinnerS_3 = uispinner(app.Src2Panel);
+            app.SpinnerS_3.Position = [49 5 44 22];
+
+            % Create SpinnerS_4
+            app.SpinnerS_4 = uispinner(app.Src2Panel);
+            app.SpinnerS_4.Position = [144 5 44 22];
+
+            % Create SwitchS_3
+            app.SwitchS_3 = uiswitch(app.Src2Panel, 'rocker');
+            app.SwitchS_3.FontSize = 0.1;
+            app.SwitchS_3.Position = [33 6 9 20];
+
+            % Create SwitchS_4
+            app.SwitchS_4 = uiswitch(app.Src2Panel, 'rocker');
+            app.SwitchS_4.FontSize = 0.1;
+            app.SwitchS_4.Position = [129 6 9 20];
+
+            % Create LampS_3
+            app.LampS_3 = uilamp(app.Src2Panel);
+            app.LampS_3.Position = [5 6 20 20];
+
+            % Create LampS_4
+            app.LampS_4 = uilamp(app.Src2Panel);
+            app.LampS_4.Position = [102 6 20 20];
+
+            % Create Src3Panel
+            app.Src3Panel = uipanel(app.Tab);
+            app.Src3Panel.Title = 'Src-3';
+            app.Src3Panel.Position = [11 77 196 55];
+
+            % Create SpinnerS_5
+            app.SpinnerS_5 = uispinner(app.Src3Panel);
+            app.SpinnerS_5.Position = [50 8 44 22];
+
+            % Create SpinnerS_6
+            app.SpinnerS_6 = uispinner(app.Src3Panel);
+            app.SpinnerS_6.Position = [144 8 44 22];
+
+            % Create SwitchS_5
+            app.SwitchS_5 = uiswitch(app.Src3Panel, 'rocker');
+            app.SwitchS_5.FontSize = 0.1;
+            app.SwitchS_5.Position = [34 9 9 20];
+
+            % Create SwitchS_6
+            app.SwitchS_6 = uiswitch(app.Src3Panel, 'rocker');
+            app.SwitchS_6.FontSize = 0.1;
+            app.SwitchS_6.Position = [130 9 9 20];
+
+            % Create LampS_5
+            app.LampS_5 = uilamp(app.Src3Panel);
+            app.LampS_5.Position = [6 9 20 20];
+
+            % Create LampS_6
+            app.LampS_6 = uilamp(app.Src3Panel);
+            app.LampS_6.Position = [103 9 20 20];
+
+            % Create Src4Panel
+            app.Src4Panel = uipanel(app.Tab);
+            app.Src4Panel.Title = 'Src-4';
+            app.Src4Panel.Position = [11 6 196 59];
+
+            % Create SpinnerS_7
+            app.SpinnerS_7 = uispinner(app.Src4Panel);
+            app.SpinnerS_7.Position = [49 11 44 22];
+
+            % Create SpinnerS_8
+            app.SpinnerS_8 = uispinner(app.Src4Panel);
+            app.SpinnerS_8.Position = [144 11 44 22];
+
+            % Create SwitchS_7
+            app.SwitchS_7 = uiswitch(app.Src4Panel, 'rocker');
+            app.SwitchS_7.FontSize = 0.1;
+            app.SwitchS_7.Position = [32 13 9 20];
+
+            % Create SwitchS_8
+            app.SwitchS_8 = uiswitch(app.Src4Panel, 'rocker');
+            app.SwitchS_8.FontSize = 0.1;
+            app.SwitchS_8.Position = [128 13 9 20];
+
+            % Create LampS_7
+            app.LampS_7 = uilamp(app.Src4Panel);
+            app.LampS_7.Position = [4 13 20 20];
+
+            % Create LampS_8
+            app.LampS_8 = uilamp(app.Src4Panel);
+            app.LampS_8.Position = [101 13 20 20];
+
+            % Create Tab_2
+            app.Tab_2 = uitab(app.TabGroup);
+            app.Tab_2.Title = '5-8';
+
+            % Create Src5Panel
+            app.Src5Panel = uipanel(app.Tab_2);
+            app.Src5Panel.Title = 'Src-1';
+            app.Src5Panel.Position = [7 210 196 49];
+
+            % Create SpinnerS_9
+            app.SpinnerS_9 = uispinner(app.Src5Panel);
+            app.SpinnerS_9.Position = [53 7 44 22];
+
+            % Create SpinnerS_10
+            app.SpinnerS_10 = uispinner(app.Src5Panel);
+            app.SpinnerS_10.Position = [146 7 44 22];
+
+            % Create SwitchS_9
+            app.SwitchS_9 = uiswitch(app.Src5Panel, 'rocker');
+            app.SwitchS_9.FontSize = 0.1;
+            app.SwitchS_9.Position = [34 8 9 20];
+
+            % Create SwitchS_10
+            app.SwitchS_10 = uiswitch(app.Src5Panel, 'rocker');
+            app.SwitchS_10.FontSize = 0.1;
+            app.SwitchS_10.Position = [130 8 9 20];
+
+            % Create LampS_9
+            app.LampS_9 = uilamp(app.Src5Panel);
+            app.LampS_9.Position = [6 8 20 20];
+
+            % Create LampS_10
+            app.LampS_10 = uilamp(app.Src5Panel);
+            app.LampS_10.Position = [103 8 20 20];
+
+            % Create Src6Panel
+            app.Src6Panel = uipanel(app.Tab_2);
+            app.Src6Panel.Title = 'Src-2';
+            app.Src6Panel.Position = [7 148 196 49];
+
+            % Create SpinnerS_11
+            app.SpinnerS_11 = uispinner(app.Src6Panel);
+            app.SpinnerS_11.Position = [53 5 44 22];
+
+            % Create SpinnerS_12
+            app.SpinnerS_12 = uispinner(app.Src6Panel);
+            app.SpinnerS_12.Position = [144 5 44 22];
+
+            % Create SwitchS_11
+            app.SwitchS_11 = uiswitch(app.Src6Panel, 'rocker');
+            app.SwitchS_11.FontSize = 0.1;
+            app.SwitchS_11.Position = [34 6 9 20];
+
+            % Create SwitchS_12
+            app.SwitchS_12 = uiswitch(app.Src6Panel, 'rocker');
+            app.SwitchS_12.FontSize = 0.1;
+            app.SwitchS_12.Position = [130 7 9 20];
+
+            % Create LampS_11
+            app.LampS_11 = uilamp(app.Src6Panel);
+            app.LampS_11.Position = [6 6 20 20];
+
+            % Create LampS_12
+            app.LampS_12 = uilamp(app.Src6Panel);
+            app.LampS_12.Position = [103 6 20 20];
+
+            % Create Src7Panel
+            app.Src7Panel = uipanel(app.Tab_2);
+            app.Src7Panel.Title = 'Src-3';
+            app.Src7Panel.Position = [7 81 196 55];
+
+            % Create SpinnerS_13
+            app.SpinnerS_13 = uispinner(app.Src7Panel);
+            app.SpinnerS_13.Position = [53 8 44 22];
+
+            % Create SpinnerS_14
+            app.SpinnerS_14 = uispinner(app.Src7Panel);
+            app.SpinnerS_14.Position = [146 8 44 22];
+
+            % Create SwitchS_13
+            app.SwitchS_13 = uiswitch(app.Src7Panel, 'rocker');
+            app.SwitchS_13.FontSize = 0.1;
+            app.SwitchS_13.Position = [34 9 9 20];
+
+            % Create SwitchS_14
+            app.SwitchS_14 = uiswitch(app.Src7Panel, 'rocker');
+            app.SwitchS_14.FontSize = 0.1;
+            app.SwitchS_14.Position = [130 9 9 20];
+
+            % Create LampS_13
+            app.LampS_13 = uilamp(app.Src7Panel);
+            app.LampS_13.Position = [6 9 20 20];
+
+            % Create LampS_14
+            app.LampS_14 = uilamp(app.Src7Panel);
+            app.LampS_14.Position = [103 9 20 20];
+
+            % Create Src8Panel
+            app.Src8Panel = uipanel(app.Tab_2);
+            app.Src8Panel.Title = 'Src-4';
+            app.Src8Panel.Position = [7 10 196 59];
+
+            % Create SpinnerS_15
+            app.SpinnerS_15 = uispinner(app.Src8Panel);
+            app.SpinnerS_15.Position = [49 11 44 22];
+
+            % Create SpinnerS_16
+            app.SpinnerS_16 = uispinner(app.Src8Panel);
+            app.SpinnerS_16.Position = [144 11 44 22];
+
+            % Create SwitchS_15
+            app.SwitchS_15 = uiswitch(app.Src8Panel, 'rocker');
+            app.SwitchS_15.FontSize = 0.1;
+            app.SwitchS_15.Position = [32 13 9 20];
+
+            % Create SwitchS_16
+            app.SwitchS_16 = uiswitch(app.Src8Panel, 'rocker');
+            app.SwitchS_16.FontSize = 0.1;
+            app.SwitchS_16.Position = [128 13 9 20];
+
+            % Create LampS_15
+            app.LampS_15 = uilamp(app.Src8Panel);
+            app.LampS_15.Position = [4 13 20 20];
+
+            % Create LampS_16
+            app.LampS_16 = uilamp(app.Src8Panel);
+            app.LampS_16.Position = [101 13 20 20];
+
+            % Create Tab_3
+            app.Tab_3 = uitab(app.TabGroup);
+            app.Tab_3.Title = '9-12';
+
+            % Create Src9Panel
+            app.Src9Panel = uipanel(app.Tab_3);
+            app.Src9Panel.Title = 'Src-1';
+            app.Src9Panel.Position = [7 210 196 49];
+
+            % Create SpinnerS_17
+            app.SpinnerS_17 = uispinner(app.Src9Panel);
+            app.SpinnerS_17.Position = [51 7 44 22];
+
+            % Create SpinnerS_18
+            app.SpinnerS_18 = uispinner(app.Src9Panel);
+            app.SpinnerS_18.Position = [146 7 44 22];
+
+            % Create SwitchS_17
+            app.SwitchS_17 = uiswitch(app.Src9Panel, 'rocker');
+            app.SwitchS_17.FontSize = 0.1;
+            app.SwitchS_17.Position = [34 8 9 20];
+
+            % Create SwitchS_18
+            app.SwitchS_18 = uiswitch(app.Src9Panel, 'rocker');
+            app.SwitchS_18.FontSize = 0.1;
+            app.SwitchS_18.Position = [130 8 9 20];
+
+            % Create LampS_17
+            app.LampS_17 = uilamp(app.Src9Panel);
+            app.LampS_17.Position = [6 8 20 20];
+
+            % Create LampS_18
+            app.LampS_18 = uilamp(app.Src9Panel);
+            app.LampS_18.Position = [103 8 20 20];
+
+            % Create Src10Panel
+            app.Src10Panel = uipanel(app.Tab_3);
+            app.Src10Panel.Title = 'Src-2';
+            app.Src10Panel.Position = [7 149 196 49];
+
+            % Create SpinnerS_19
+            app.SpinnerS_19 = uispinner(app.Src10Panel);
+            app.SpinnerS_19.Position = [51 4 44 22];
+
+            % Create SpinnerS_20
+            app.SpinnerS_20 = uispinner(app.Src10Panel);
+            app.SpinnerS_20.Position = [144 4 44 22];
+
+            % Create SwitchS_19
+            app.SwitchS_19 = uiswitch(app.Src10Panel, 'rocker');
+            app.SwitchS_19.FontSize = 0.1;
+            app.SwitchS_19.Position = [32 5 9 20];
+
+            % Create SwitchS_20
+            app.SwitchS_20 = uiswitch(app.Src10Panel, 'rocker');
+            app.SwitchS_20.FontSize = 0.1;
+            app.SwitchS_20.Position = [128 5 9 20];
+
+            % Create LampS_19
+            app.LampS_19 = uilamp(app.Src10Panel);
+            app.LampS_19.Position = [4 5 20 20];
+
+            % Create LampS_20
+            app.LampS_20 = uilamp(app.Src10Panel);
+            app.LampS_20.Position = [101 5 20 20];
+
+            % Create Src11Panel
+            app.Src11Panel = uipanel(app.Tab_3);
+            app.Src11Panel.Title = 'Src-3';
+            app.Src11Panel.Position = [7 82 196 55];
+
+            % Create SpinnerS_21
+            app.SpinnerS_21 = uispinner(app.Src11Panel);
+            app.SpinnerS_21.Position = [49 8 44 22];
+
+            % Create SpinnerS_22
+            app.SpinnerS_22 = uispinner(app.Src11Panel);
+            app.SpinnerS_22.Position = [151 8 44 22];
+
+            % Create SwitchS_21
+            app.SwitchS_21 = uiswitch(app.Src11Panel, 'rocker');
+            app.SwitchS_21.FontSize = 0.1;
+            app.SwitchS_21.Position = [34 9 9 20];
+
+            % Create SwitchS_22
+            app.SwitchS_22 = uiswitch(app.Src11Panel, 'rocker');
+            app.SwitchS_22.FontSize = 0.1;
+            app.SwitchS_22.Position = [130 9 9 20];
+
+            % Create LampS_21
+            app.LampS_21 = uilamp(app.Src11Panel);
+            app.LampS_21.Position = [6 9 20 20];
+
+            % Create LampS_22
+            app.LampS_22 = uilamp(app.Src11Panel);
+            app.LampS_22.Position = [103 9 20 20];
+
+            % Create Src12Panel
+            app.Src12Panel = uipanel(app.Tab_3);
+            app.Src12Panel.Title = 'Src-4';
+            app.Src12Panel.Position = [7 11 196 59];
+
+            % Create SpinnerS_23
+            app.SpinnerS_23 = uispinner(app.Src12Panel);
+            app.SpinnerS_23.Position = [49 11 44 22];
+
+            % Create SpinnerS_24
+            app.SpinnerS_24 = uispinner(app.Src12Panel);
+            app.SpinnerS_24.Position = [144 11 44 22];
+
+            % Create SwitchS_23
+            app.SwitchS_23 = uiswitch(app.Src12Panel, 'rocker');
+            app.SwitchS_23.FontSize = 0.1;
+            app.SwitchS_23.Position = [32 13 9 20];
+
+            % Create SwitchS_24
+            app.SwitchS_24 = uiswitch(app.Src12Panel, 'rocker');
+            app.SwitchS_24.FontSize = 0.1;
+            app.SwitchS_24.Position = [128 13 9 20];
+
+            % Create LampS_23
+            app.LampS_23 = uilamp(app.Src12Panel);
+            app.LampS_23.Position = [4 13 20 20];
+
+            % Create LampS_24
+            app.LampS_24 = uilamp(app.Src12Panel);
+            app.LampS_24.Position = [101 13 20 20];
+
+            % Create Tab_4
+            app.Tab_4 = uitab(app.TabGroup);
+            app.Tab_4.Title = '13-16';
+
+            % Create Src13Panel
+            app.Src13Panel = uipanel(app.Tab_4);
+            app.Src13Panel.Title = 'Src-1';
+            app.Src13Panel.Position = [7 210 196 49];
+
+            % Create SpinnerS_25
+            app.SpinnerS_25 = uispinner(app.Src13Panel);
+            app.SpinnerS_25.Position = [49 5 44 22];
+
+            % Create SpinnerS_26
+            app.SpinnerS_26 = uispinner(app.Src13Panel);
+            app.SpinnerS_26.Position = [144 5 44 22];
+
+            % Create SwitchS_25
+            app.SwitchS_25 = uiswitch(app.Src13Panel, 'rocker');
+            app.SwitchS_25.FontSize = 0.1;
+            app.SwitchS_25.Position = [34 8 9 20];
+
+            % Create SwitchS_26
+            app.SwitchS_26 = uiswitch(app.Src13Panel, 'rocker');
+            app.SwitchS_26.FontSize = 0.1;
+            app.SwitchS_26.Position = [130 8 9 20];
+
+            % Create LampS_25
+            app.LampS_25 = uilamp(app.Src13Panel);
+            app.LampS_25.Position = [6 8 20 20];
+
+            % Create LampS_26
+            app.LampS_26 = uilamp(app.Src13Panel);
+            app.LampS_26.Position = [103 8 20 20];
+
+            % Create Src14Panel
+            app.Src14Panel = uipanel(app.Tab_4);
+            app.Src14Panel.Title = 'Src-2';
+            app.Src14Panel.Position = [7 147 196 49];
+
+            % Create SpinnerS_27
+            app.SpinnerS_27 = uispinner(app.Src14Panel);
+            app.SpinnerS_27.Position = [46 5 44 22];
+
+            % Create SpinnerS_28
+            app.SpinnerS_28 = uispinner(app.Src14Panel);
+            app.SpinnerS_28.Position = [144 5 44 22];
+
+            % Create SwitchS_27
+            app.SwitchS_27 = uiswitch(app.Src14Panel, 'rocker');
+            app.SwitchS_27.FontSize = 0.1;
+            app.SwitchS_27.Position = [32 6 9 20];
+
+            % Create SwitchS_28
+            app.SwitchS_28 = uiswitch(app.Src14Panel, 'rocker');
+            app.SwitchS_28.FontSize = 0.1;
+            app.SwitchS_28.Position = [128 6 9 20];
+
+            % Create LampS_27
+            app.LampS_27 = uilamp(app.Src14Panel);
+            app.LampS_27.Position = [4 6 20 20];
+
+            % Create LampS_28
+            app.LampS_28 = uilamp(app.Src14Panel);
+            app.LampS_28.Position = [101 6 20 20];
+
+            % Create Src15Panel
+            app.Src15Panel = uipanel(app.Tab_4);
+            app.Src15Panel.Title = 'Src-3';
+            app.Src15Panel.Position = [7 78 196 55];
+
+            % Create SpinnerS_29
+            app.SpinnerS_29 = uispinner(app.Src15Panel);
+            app.SpinnerS_29.Position = [49 8 44 22];
+
+            % Create SpinnerS_30
+            app.SpinnerS_30 = uispinner(app.Src15Panel);
+            app.SpinnerS_30.Position = [144 8 44 22];
+
+            % Create SwitchS_29
+            app.SwitchS_29 = uiswitch(app.Src15Panel, 'rocker');
+            app.SwitchS_29.FontSize = 0.1;
+            app.SwitchS_29.Position = [34 9 9 20];
+
+            % Create SwitchS_30
+            app.SwitchS_30 = uiswitch(app.Src15Panel, 'rocker');
+            app.SwitchS_30.FontSize = 0.1;
+            app.SwitchS_30.Position = [130 9 9 20];
+
+            % Create LampS_29
+            app.LampS_29 = uilamp(app.Src15Panel);
+            app.LampS_29.Position = [6 9 20 20];
+
+            % Create LampS_30
+            app.LampS_30 = uilamp(app.Src15Panel);
+            app.LampS_30.Position = [103 9 20 20];
+
+            % Create Src16Panel
+            app.Src16Panel = uipanel(app.Tab_4);
+            app.Src16Panel.Title = 'Src-4';
+            app.Src16Panel.Position = [7 6 196 59];
+
+            % Create SpinnerS_31
+            app.SpinnerS_31 = uispinner(app.Src16Panel);
+            app.SpinnerS_31.Position = [49 11 44 22];
+
+            % Create SpinnerS_32
+            app.SpinnerS_32 = uispinner(app.Src16Panel);
+            app.SpinnerS_32.Position = [144 11 44 22];
+
+            % Create SwitchS_31
+            app.SwitchS_31 = uiswitch(app.Src16Panel, 'rocker');
+            app.SwitchS_31.FontSize = 0.1;
+            app.SwitchS_31.Position = [32 13 9 20];
+
+            % Create SwitchS_32
+            app.SwitchS_32 = uiswitch(app.Src16Panel, 'rocker');
+            app.SwitchS_32.FontSize = 0.1;
+            app.SwitchS_32.Position = [128 13 9 20];
+
+            % Create LampS_31
+            app.LampS_31 = uilamp(app.Src16Panel);
+            app.LampS_31.Position = [4 13 20 20];
+
+            % Create LampS_32
+            app.LampS_32 = uilamp(app.Src16Panel);
+            app.LampS_32.Position = [101 13 20 20];
+
+            % Create LinkWavelengthsCheckBox
+            app.LinkWavelengthsCheckBox = uicheckbox(app.SourcesTab);
+            app.LinkWavelengthsCheckBox.ValueChangedFcn = createCallbackFcn(app, @LinkWavelengthsCheckBoxValueChanged, true);
+            app.LinkWavelengthsCheckBox.Tooltip = {'Links the on/off state of the two wavelength sources '};
+            app.LinkWavelengthsCheckBox.Text = 'Link Wavelengths';
+            app.LinkWavelengthsCheckBox.Position = [182 325 116 22];
+            app.LinkWavelengthsCheckBox.Value = true;
+
+            % Create SetAllPowersEditFieldLabel
+            app.SetAllPowersEditFieldLabel = uilabel(app.SourcesTab);
+            app.SetAllPowersEditFieldLabel.HorizontalAlignment = 'right';
+            app.SetAllPowersEditFieldLabel.Position = [155 8 83 22];
+            app.SetAllPowersEditFieldLabel.Text = 'Set All Powers';
+
+            % Create SetAllPowersEditField
+            app.SetAllPowersEditField = uieditfield(app.SourcesTab, 'numeric');
+            app.SetAllPowersEditField.Limits = [0 100];
+            app.SetAllPowersEditField.RoundFractionalValues = 'on';
+            app.SetAllPowersEditField.ValueChangedFcn = createCallbackFcn(app, @SetAllPowersEditFieldValueChanged, true);
+            app.SetAllPowersEditField.Position = [243 8 45 22];
+
+            % Create EventsTab
+            app.EventsTab = uitab(app.TabGroupControls);
+            app.EventsTab.Title = 'Events';
+
+            % Create UITable
+            app.UITable = uitable(app.EventsTab);
+            app.UITable.ColumnName = {'Name'; 'Onset'; 'Dur'; 'Amp'};
+            app.UITable.RowName = {};
+            app.UITable.ColumnEditable = true;
+            app.UITable.Position = [5 13 294 216];
+
+            % Create Panel_9
+            app.Panel_9 = uipanel(app.EventsTab);
+            app.Panel_9.Position = [9 239 180 111];
+
+            % Create MarkEventButton_2
+            app.MarkEventButton_2 = uibutton(app.Panel_9, 'push');
+            app.MarkEventButton_2.ButtonPushedFcn = createCallbackFcn(app, @MarkEventButton_2Pushed, true);
+            app.MarkEventButton_2.Position = [6 44 77 22];
+            app.MarkEventButton_2.Text = 'Mark Event';
+
+            % Create Switch_33
+            app.Switch_33 = uiswitch(app.Panel_9, 'rocker');
+            app.Switch_33.Orientation = 'horizontal';
+            app.Switch_33.ValueChangedFcn = createCallbackFcn(app, @Switch_33ValueChanged, true);
+            app.Switch_33.Tooltip = {'Toggle Stimulus Events On/Off'; ''};
+            app.Switch_33.Position = [24 13 45 20];
+
+            % Create TaskDropDown
+            app.TaskDropDown = uidropdown(app.Panel_9);
+            app.TaskDropDown.Editable = 'on';
+            app.TaskDropDown.ValueChangedFcn = createCallbackFcn(app, @TaskDropDownValueChanged, true);
+            app.TaskDropDown.BackgroundColor = [1 1 1];
+            app.TaskDropDown.Position = [6 77 167 22];
+
+            % Create Label_2
+            app.Label_2 = uilabel(app.Panel_9);
+            app.Label_2.HorizontalAlignment = 'center';
+            app.Label_2.Position = [120 23 25 22];
+            app.Label_2.Text = '0';
+
+            % Create NumberofEventsLabel
+            app.NumberofEventsLabel = uilabel(app.Panel_9);
+            app.NumberofEventsLabel.FontSize = 10;
+            app.NumberofEventsLabel.Position = [91 44 86 22];
+            app.NumberofEventsLabel.Text = 'Number of Events';
+
+            % Create AuxTriggersPanel
+            app.AuxTriggersPanel = uipanel(app.EventsTab);
+            app.AuxTriggersPanel.Title = 'Aux Triggers';
+            app.AuxTriggersPanel.Visible = 'off';
+            app.AuxTriggersPanel.Position = [196 239 107 111];
+
+            % Create Aux1Lamp_4
+            app.Aux1Lamp_4 = uilamp(app.AuxTriggersPanel);
+            app.Aux1Lamp_4.Position = [8 63 15 15];
+            app.Aux1Lamp_4.Color = [0.651 0.651 0.651];
+
+            % Create Aux1Lamp_5
+            app.Aux1Lamp_5 = uilamp(app.AuxTriggersPanel);
+            app.Aux1Lamp_5.Position = [32 63 15 15];
+            app.Aux1Lamp_5.Color = [0.651 0.651 0.651];
+
+            % Create Aux1Lamp_6
+            app.Aux1Lamp_6 = uilamp(app.AuxTriggersPanel);
+            app.Aux1Lamp_6.Position = [56 63 15 15];
+            app.Aux1Lamp_6.Color = [0.651 0.651 0.651];
+
+            % Create Aux1Lamp_7
+            app.Aux1Lamp_7 = uilamp(app.AuxTriggersPanel);
+            app.Aux1Lamp_7.Position = [79 63 15 15];
+            app.Aux1Lamp_7.Color = [0.651 0.651 0.651];
+
+            % Create Aux1Lamp_8
+            app.Aux1Lamp_8 = uilamp(app.AuxTriggersPanel);
+            app.Aux1Lamp_8.Position = [8 39 15 15];
+            app.Aux1Lamp_8.Color = [0.651 0.651 0.651];
+
+            % Create Aux1Lamp_9
+            app.Aux1Lamp_9 = uilamp(app.AuxTriggersPanel);
+            app.Aux1Lamp_9.Position = [32 39 15 15];
+            app.Aux1Lamp_9.Color = [0.651 0.651 0.651];
+
+            % Create Aux1Lamp_10
+            app.Aux1Lamp_10 = uilamp(app.AuxTriggersPanel);
+            app.Aux1Lamp_10.Position = [56 39 15 15];
+            app.Aux1Lamp_10.Color = [0.651 0.651 0.651];
+
+            % Create Aux1Lamp_11
+            app.Aux1Lamp_11 = uilamp(app.AuxTriggersPanel);
+            app.Aux1Lamp_11.Position = [79 39 15 15];
+            app.Aux1Lamp_11.Color = [0.651 0.651 0.651];
+
+            % Create RealtimeTab
+            app.RealtimeTab = uitab(app.TabGroupControls);
+            app.RealtimeTab.Title = 'Real-time';
+
+            % Create FilteringPanel
+            app.FilteringPanel = uipanel(app.RealtimeTab);
+            app.FilteringPanel.Title = 'Filtering';
+            app.FilteringPanel.FontWeight = 'bold';
+            app.FilteringPanel.Position = [10 262 284 89];
+
+            % Create HighPassEditFieldLabel
+            app.HighPassEditFieldLabel = uilabel(app.FilteringPanel);
+            app.HighPassEditFieldLabel.HorizontalAlignment = 'right';
+            app.HighPassEditFieldLabel.Position = [4 40 60 22];
+            app.HighPassEditFieldLabel.Text = 'High Pass';
+
+            % Create HighPassEditField
+            app.HighPassEditField = uieditfield(app.FilteringPanel, 'numeric');
+            app.HighPassEditField.Limits = [0 Inf];
+            app.HighPassEditField.ValueChangedFcn = createCallbackFcn(app, @HighPassEditFieldValueChanged, true);
+            app.HighPassEditField.Tooltip = {'Removes slow drifts in the display of data'};
+            app.HighPassEditField.Position = [79 40 100 22];
+            app.HighPassEditField.Value = 0.016;
+
+            % Create LowPassEditFieldLabel
+            app.LowPassEditFieldLabel = uilabel(app.FilteringPanel);
+            app.LowPassEditFieldLabel.HorizontalAlignment = 'right';
+            app.LowPassEditFieldLabel.Position = [6 9 58 22];
+            app.LowPassEditFieldLabel.Text = 'Low Pass';
+
+            % Create LowPassEditField
+            app.LowPassEditField = uieditfield(app.FilteringPanel, 'numeric');
+            app.LowPassEditField.Limits = [0 Inf];
+            app.LowPassEditField.ValueChangedFcn = createCallbackFcn(app, @LowPassEditFieldValueChanged, true);
+            app.LowPassEditField.Tooltip = {'Removes fast noise in the display of the data'};
+            app.LowPassEditField.Position = [79 9 100 22];
+            app.LowPassEditField.Value = 1;
+
+            % Create CheckBox
+            app.CheckBox = uicheckbox(app.FilteringPanel);
+            app.CheckBox.ValueChangedFcn = createCallbackFcn(app, @CheckBoxValueChanged, true);
+            app.CheckBox.Text = '';
+            app.CheckBox.Position = [183 40 25 22];
+
+            % Create CheckBox_2
+            app.CheckBox_2 = uicheckbox(app.FilteringPanel);
+            app.CheckBox_2.ValueChangedFcn = createCallbackFcn(app, @CheckBox_2ValueChanged, true);
+            app.CheckBox_2.Text = '';
+            app.CheckBox_2.Position = [183 9 25 22];
+            app.CheckBox_2.Value = true;
+
+            % Create MotionCorrectionPanel
+            app.MotionCorrectionPanel = uipanel(app.RealtimeTab);
+            app.MotionCorrectionPanel.Title = 'Motion Correction';
+            app.MotionCorrectionPanel.FontWeight = 'bold';
+            app.MotionCorrectionPanel.Position = [9 200 284 55];
+
+            % Create LinearModelPanel
+            app.LinearModelPanel = uipanel(app.RealtimeTab);
+            app.LinearModelPanel.Title = 'Linear Model';
+            app.LinearModelPanel.FontWeight = 'bold';
+            app.LinearModelPanel.Position = [10 39 284 143];
+
+            % Create ModelDropDownLabel
+            app.ModelDropDownLabel = uilabel(app.LinearModelPanel);
+            app.ModelDropDownLabel.HorizontalAlignment = 'right';
+            app.ModelDropDownLabel.Position = [8 56 39 22];
+            app.ModelDropDownLabel.Text = 'Model';
+
+            % Create ModelDropDown
+            app.ModelDropDown = uidropdown(app.LinearModelPanel);
+            app.ModelDropDown.Items = {'Canonical', 'Block Average'};
+            app.ModelDropDown.Position = [62 56 100 22];
+            app.ModelDropDown.Value = 'Canonical';
+
+            % Create ApplyGLMCheckBox
+            app.ApplyGLMCheckBox = uicheckbox(app.LinearModelPanel);
+            app.ApplyGLMCheckBox.ValueChangedFcn = createCallbackFcn(app, @ApplyGLMCheckBoxValueChanged, true);
+            app.ApplyGLMCheckBox.Tooltip = {'Runs real-time statistical analysis based on Barker et al 2016'};
+            app.ApplyGLMCheckBox.Text = 'Apply GLM ';
+            app.ApplyGLMCheckBox.Position = [13 90 86 22];
+
+            % Create TuneSliderLabel
+            app.TuneSliderLabel = uilabel(app.LinearModelPanel);
+            app.TuneSliderLabel.HorizontalAlignment = 'right';
+            app.TuneSliderLabel.Position = [13 20 31 22];
+            app.TuneSliderLabel.Text = 'Tune';
+
+            % Create TuneSlider
+            app.TuneSlider = uislider(app.LinearModelPanel);
+            app.TuneSlider.Tooltip = {'Controls the variability in the estimated response.  Small is a more convergent response.'};
+            app.TuneSlider.Position = [55 39 100 3];
+
+            % Create ApplyMotionCorrectionCheckBox
+            app.ApplyMotionCorrectionCheckBox = uicheckbox(app.RealtimeTab);
+            app.ApplyMotionCorrectionCheckBox.ValueChangedFcn = createCallbackFcn(app, @ApplyMotionCorrectionCheckBoxValueChanged, true);
+            app.ApplyMotionCorrectionCheckBox.Enable = 'off';
+            app.ApplyMotionCorrectionCheckBox.Tooltip = {'Implements real-time motion correction based on Barker et al 2015 '};
+            app.ApplyMotionCorrectionCheckBox.Text = 'Apply Motion Correction';
+            app.ApplyMotionCorrectionCheckBox.Position = [24 207 153 22];
+
+            % Create FilesTab
+            app.FilesTab = uitab(app.TabGroupControls);
+            app.FilesTab.Title = 'Files';
+
+            % Create Tree
+            app.Tree = uitree(app.FilesTab);
+            app.Tree.Position = [10 44 283 306];
+
+            % Create DataNode
+            app.DataNode = uitreenode(app.Tree);
+            app.DataNode.Text = 'Data';
+
+            % Create RecordedFilesNode
+            app.RecordedFilesNode = uitreenode(app.DataNode);
+            app.RecordedFilesNode.Text = 'Recorded Files';
+
+            % Create LoadedFilesNode
+            app.LoadedFilesNode = uitreenode(app.DataNode);
+            app.LoadedFilesNode.Text = 'Loaded Files';
+
+            % Create AnalyzedResultsNode
+            app.AnalyzedResultsNode = uitreenode(app.DataNode);
+            app.AnalyzedResultsNode.Text = 'Analyzed Results';
+
+            % Create RunAnalysisButton
+            app.RunAnalysisButton = uibutton(app.FilesTab, 'push');
+            app.RunAnalysisButton.ButtonPushedFcn = createCallbackFcn(app, @RunAnalysisButtonPushed, true);
+            app.RunAnalysisButton.Position = [193 13 100 22];
+            app.RunAnalysisButton.Text = 'Run Analysis';
+
+            % Create SystemTab
+            app.SystemTab = uitab(app.TabGroupControls);
+            app.SystemTab.Title = 'System';
+
+            % Create SampleRateDropDownLabel
+            app.SampleRateDropDownLabel = uilabel(app.SystemTab);
+            app.SampleRateDropDownLabel.HorizontalAlignment = 'right';
+            app.SampleRateDropDownLabel.FontWeight = 'bold';
+            app.SampleRateDropDownLabel.Position = [13 321 78 22];
+            app.SampleRateDropDownLabel.Text = 'Sample Rate';
+
+            % Create SampleRateDropDown
+            app.SampleRateDropDown = uidropdown(app.SystemTab);
+            app.SampleRateDropDown.Items = {'10Hz', '25Hz', '50Hz'};
+            app.SampleRateDropDown.ValueChangedFcn = createCallbackFcn(app, @SampleRateDropDownValueChanged, true);
+            app.SampleRateDropDown.Tooltip = {'Sets the sample rate of the data collection device'};
+            app.SampleRateDropDown.FontWeight = 'bold';
+            app.SampleRateDropDown.Position = [106 321 100 22];
+            app.SampleRateDropDown.Value = '10Hz';
+
+            % Create ApplyHardwarefiltersCheckBox
+            app.ApplyHardwarefiltersCheckBox = uicheckbox(app.SystemTab);
+            app.ApplyHardwarefiltersCheckBox.ValueChangedFcn = createCallbackFcn(app, @ApplyHardwarefiltersCheckBoxValueChanged, true);
+            app.ApplyHardwarefiltersCheckBox.Tooltip = {'Sets the hardware lowpass filter on the Bluetooth NIRS device'};
+            app.ApplyHardwarefiltersCheckBox.Text = 'Apply Hardware filters';
+            app.ApplyHardwarefiltersCheckBox.Position = [22 292 179 22];
+
+            % Create SystemMessageTextAreaLabel
+            app.SystemMessageTextAreaLabel = uilabel(app.SystemTab);
+            app.SystemMessageTextAreaLabel.HorizontalAlignment = 'right';
+            app.SystemMessageTextAreaLabel.Position = [17 229 98 22];
+            app.SystemMessageTextAreaLabel.Text = 'System Message';
+
+            % Create SystemMessageTextArea
+            app.SystemMessageTextArea = uitextarea(app.SystemTab);
+            app.SystemMessageTextArea.Position = [17 13 276 217];
+
+            % Create ConnectionEditFieldLabel
+            app.ConnectionEditFieldLabel = uilabel(app.SystemTab);
+            app.ConnectionEditFieldLabel.HorizontalAlignment = 'right';
+            app.ConnectionEditFieldLabel.FontWeight = 'bold';
+            app.ConnectionEditFieldLabel.Position = [20 259 71 22];
+            app.ConnectionEditFieldLabel.Text = 'Connection';
+
+            % Create ConnectionEditField
+            app.ConnectionEditField = uieditfield(app.SystemTab, 'text');
+            app.ConnectionEditField.Editable = 'off';
+            app.ConnectionEditField.Position = [106 259 100 22];
+            app.ConnectionEditField.Value = 'COM 1';
+
+            % Create NotConnectedLampLabel
+            app.NotConnectedLampLabel = uilabel(app.BrainRecordIRUIFigure);
+            app.NotConnectedLampLabel.HorizontalAlignment = 'right';
+            app.NotConnectedLampLabel.FontWeight = 'bold';
+            app.NotConnectedLampLabel.Position = [736 18 330 22];
+            app.NotConnectedLampLabel.Text = 'Not Connected';
+
+            % Create NotConnectedLamp
+            app.NotConnectedLamp = uilamp(app.BrainRecordIRUIFigure);
+            app.NotConnectedLamp.Position = [1081 20 18 18];
+            app.NotConnectedLamp.Color = [0.902 0.902 0.902];
+
+            % Create Battery100Label
+            app.Battery100Label = uilabel(app.BrainRecordIRUIFigure);
+            app.Battery100Label.Position = [982 1 81 22];
+            app.Battery100Label.Text = 'Battery=100%';
+
+            % Show the figure after all components are created
+            app.BrainRecordIRUIFigure.Visible = 'on';
+        end
+    end
+
+    % App creation and deletion
+    methods (Access = public)
+
+        % Construct app
+        function app = BrainRecordIR(varargin)
+
+            % Create UIFigure and components
+            createComponents(app)
+
+            % Register the app with App Designer
+            registerApp(app, app.BrainRecordIRUIFigure)
+
+            % Execute the startup function
+            runStartupFcn(app, @(app)startupFcn(app, varargin{:}))
+
+            if nargout == 0
+                clear app
+            end
+        end
+
+        % Code that executes before app deletion
+        function delete(app)
+
+            % Delete UIFigure when app is deleted
+            delete(app.BrainRecordIRUIFigure)
+        end
+    end
+end]]></w:t></w:r></w:p></w:body></w:document>

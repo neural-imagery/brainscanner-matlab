@@ -13,7 +13,6 @@ classdef BTNIRS < handle
       
     end
     
-    
     properties(Hidden = true)
         laserstate;
         laserpwr;
@@ -39,52 +38,84 @@ classdef BTNIRS < handle
         
         function obj=BTNIRS
             obj.isrunning=false;
-            
             obj.WordsPerRecord = 5+64*round(obj.sample_rate/10)+11; % 2 srcs X 4 dets X 2 sides (=32) + 2.5 Header + 5.5 Trailing ***"16-bitWORDS"
-            
-            
             % close down any existing devices
-            in=instrfind;
-            for i=1:length(in); fclose(in(i)); end;
-            
-            %% intialize to the serial port
-            
+            disp("Starting...")
+            serialPorts = serialportlist;
+            disp(serialPorts);
+            for i=1:length(serialPorts)
+                try
+                    delete(serialport(serialPorts(i)));
+                catch
+                    continue;
+                end
+            end
+
+            %% initialize to the serial port
             obj.serialport=[];
             if(ispc)
-                for i=10:-1:1
+                for i=1:length(serialPorts)
                     try
-                        disp(['trying COM' num2str(i)])
-                        obj.serialport=serial(['COM' num2str(i)]);
+                        disp(['trying ' serialPorts(i)])
+                        obj.serialport=serialport(serialPorts(i), 115200, 'Timeout', 10);
                         
-                        set(obj.serialport, 'FlowControl', 'none');
-                        set(obj.serialport, 'BaudRate', 115200);
-                        set(obj.serialport, 'Parity', 'none');
-                        set(obj.serialport, 'DataBits', 8);
-                        set(obj.serialport, 'StopBit', 1);
-                        set(obj.serialport, 'Timeout',10);
-                        set(obj.serialport, 'InputBufferSize',obj.SPbuffersize); %number of bytes in input buffer
-                        fopen(obj.serialport);
-                        obj.comport=['COM' num2str(i)];
+                        obj.serialport.FlowControl = 'none';
+                        obj.serialport.Parity = 'none';
+                        obj.serialport.DataBits = 8;
+                        obj.serialport.StopBits = 1;
+                        obj.serialport.InputBufferSize = obj.SPbuffersize; %number of bytes in input buffer
                         
-                        fprintf(obj.serialport, sprintf('PID\r'));%\n
-                        idn = fscanf(obj.serialport);
+                        obj.comport = serialPorts(i);
+                        
+                        writeline(obj.serialport, 'PID');
+                        idn = readline(obj.serialport);
                         disp(['Version: ' idn(strfind(idn,'NBT'):end-2)]);
                         break;
                     catch
                         obj.serialport=[];
                     end
                 end
+            else
+                disp("Connecting to ports...");
+                b=dir('/dev/cu.Dual*');
+                if ~isempty(b)
+                    try
+                        disp(['trying ' b(1).name])
+                        if ismac
+                            obj.serialport=serialport(['/dev/' b(1).name], 115200, 'Timeout', 10);
+                        else
+                            obj.serialport=serialport(b(1).name, 115200, 'Timeout', 10);
+                        end
+                        disp("Serialport connected...");
+
+                        obj.serialport.FlowControl = 'none';
+                        obj.serialport.Parity = 'none';
+                        obj.serialport.DataBits = 8;
+                        obj.serialport.StopBits = 1;
+                        obj.serialport.InputBufferSize = obj.SPbuffersize; %number of bytes in input buffer
+                        
+                        obj.comport = b(1).name;
+                        
+                        disp("Writing...");
+                        writeline(obj.serialport, 'PID');
+                        idn = readline(obj.serialport);
+                        disp("Read: ");
+                        disp(idn);
+                        disp(['Version: ' idn(strfind(idn,'NBT'):end-2)]);
+                    catch
+                        disp("Failed to find headset at port");
+                        obj.serialport=[];
+                    end
+                end
             end
             
-            
-            
+            disp("Gets to here...")
             if(isempty(obj.serialport))
                 warning('Failed to load device');
                 %disp(int);
                 error('unable to start');
                 return;
             end
-            
             
             %             else
             %
@@ -102,10 +133,7 @@ classdef BTNIRS < handle
             %             end
             %
             % set(obj.serialport,'byteorder','littleendian');
-            
-            
-            
-            
+    
             % make sure all the default settings are ok
             obj.laserstate=false(obj.numsrc,1);
             obj.laserpwr=ones(obj.numsrc,1);
@@ -134,13 +162,18 @@ classdef BTNIRS < handle
            
             type=      [1 1 2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 1 2 2]';
             type(type==1)=735; type(type==2)=850;
+            disp("Starting 6...")
             obj.DAQMeasList=table(source,detector,type,byte1,byte2);
             %obj=obj.updatebattery;
         end
         
         
         function n= get.info(obj)
-            n=['Connected: TechEn BTNIRS ' obj.serialport.name];
+            if ismac
+                n=['Connected: TechEn BTNIRS!'];
+            else
+                n=['Connected: TechEn BTNIRS!' obj.serialport.name];
+            end
         end
         
         
@@ -157,6 +190,10 @@ classdef BTNIRS < handle
             
             %TODO
             
+        end
+        
+        function obj=createTCPDefault(obj)
+            obj.tcp_connection = tcpclient("35.186.191.80", 9000);  % Modify this line
         end
         
         %% laser states
@@ -215,7 +252,7 @@ classdef BTNIRS < handle
             flushinput(obj.serialport);
             fprintf(obj.serialport, sprintf('RUN\r'));%\n
             pause(0.25); %v1.3 rcd-added 01/10/2017
-            obj.tcp_connection = tcpclient("35.186.191.80", 9000);  % Modify this line
+            obj.createTCPDefault();
         end
         
         %% STOP ACQ
@@ -374,7 +411,7 @@ classdef BTNIRS < handle
 
                     % Attempt to reconnect
                     try
-                        obj.tcp_connection = tcpclient("35.186.191.80", 9000);  % Modify this line
+                        obj.createTCPDefault();
                         disp('Reconnected successfully.');
                     catch ME
                         disp('Failed to reconnect:');

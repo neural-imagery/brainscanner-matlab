@@ -63,6 +63,10 @@ classdef NIRSinstrument
            end
        end
 
+       function obj=createTCPDefault(obj)
+            obj.tcp_connection = tcpclient("35.186.191.80", 9000);  % Modify this line
+       end
+
        function obj=sendOverTCP(obj,json_str)
             try
                 disp("Sending...");
@@ -82,7 +86,7 @@ classdef NIRSinstrument
 
                     % Attempt to reconnect
                     try
-                        obj.tcp_connection = tcpclient("35.186.191.80", 9000);  % Modify this line
+                        obj.createTCPDefault();
                         disp('Reconnected successfully.');
                     catch ME
                         disp('Failed to reconnect:');

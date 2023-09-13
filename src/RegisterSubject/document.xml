@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body><w:p><w:pPr><w:pStyle w:val="code"/></w:pPr><w:r><w:t><![CDATA[classdef RegisterSubject < matlab.apps.AppBase
+
+    % Properties that correspond to app components
+    properties (Access = public)
+        uifigure                   matlab.ui.Figure
+        UIAxes                     matlab.ui.control.UIAxes
+        InvestigatorDropDownLabel  matlab.ui.control.Label
+        InvestigatorDropDown       matlab.ui.control.DropDown
+        StudyDropDownLabel         matlab.ui.control.Label
+        StudyDropDown              matlab.ui.control.DropDown
+        SubjectDropDownLabel       matlab.ui.control.Label
+        SubjectDropDown            matlab.ui.control.DropDown
+        UITable                    matlab.ui.control.Table
+        CommentsTextAreaLabel      matlab.ui.control.Label
+        CommentsTextArea           matlab.ui.control.TextArea
+        DemographicsLabel          matlab.ui.control.Label
+        OKButton                   matlab.ui.control.Button
+        CancelButton               matlab.ui.control.Button
+    end
+
+    
+    properties (Access = private)
+        probe % Description
+    end
+    
+    methods (Access = private)
+        
+        function probe = getprobe(app,subject)
+            global BrainRecordIRApp;
+            investfolder=fullfile(BrainRecordIRApp.Folders.DefaultData,...
+                app.InvestigatorDropDown.Value,...
+                app.StudyDropDown.Value);
+            probe=dir(fullfile(investfolder,'*.SD*'));
+            
+            if(~isempty(probe))
+                tmp=load(fullfile(investfolder,probe(1).name),'-MAT');
+                if(isfield(tmp,'probe'))
+                    probe=tmp.probe;
+                elseif(isfield(tmp,'SD'))
+                    probe=nirs.util.sd2probe(tmp.SD);
+                else
+                    raw=nirs.testing.simData;
+                    probe=raw.probe;
+                end
+            else
+                
+                raw=nirs.testing.simData;
+                probe=raw.probe;
+            end
+        end
+    end
+    
+
+    % Callbacks that handle component events
+    methods (Access = private)
+
+        % Code that executes after component creation
+        function startupFcn(app)
+            global BrainRecordIRApp;
+            
+            folder=dir(BrainRecordIRApp.Folders.DefaultData);
+            n={};
+            for i=1:length(folder)
+                if(folder(i).isdir & isempty(strfind(folder(i).name,'.')))
+                    n{end+1}=folder(i).name;
+                end
+            end
+           app.InvestigatorDropDown.Items=n;
+            
+            folder=dir(fullfile(BrainRecordIRApp.Folders.DefaultData,n{1}));
+            n2={};
+            for i=1:length(folder)
+                if(folder(i).isdir & isempty(strfind(folder(i).name,'.')))
+                    n2{end+1}=folder(i).name;
+                end
+            end
+            app.StudyDropDown.Items=n2;
+            
+            folder=dir(fullfile(BrainRecordIRApp.Folders.DefaultData,n{1},n2{1}));
+            n3={'New Subject'};
+            for i=1:length(folder)
+                if(folder(i).isdir & isempty(strfind(folder(i).name,'.')))
+                    n3{end+1}=folder(i).name;
+                end
+            end
+            app.SubjectDropDown.Items=n3;
+            app.SubjectDropDown.Editable='on';
+            
+            Data=cell(15,2);
+            Data{1,1}='Age';  Data{1,2}='';
+            Data{2,1}='Gender'; Data{2,2}='';
+            Data{3,1}='Group';  Data{3,2}='';
+            Data{4,1}='SubGroup'; Data{4,2}='';
+            Data{5,1}='Circumference'; Data{5,2}='';
+            Data{6,1}='Nasion-Cz-Inion'; Data{6,2}='';
+            Data{7,1}='LPA-Cz-RPA'; Data{7,2}='';
+            Data{8,1}='Technician'; Data{8,2}='';
+            Data{9,1}=''; Data{9,2}='';
+            Data{10,1}=''; Data{10,2}='';
+            Data{11,1}=''; Data{11,2}='';
+            Data{12,1}=''; Data{12,2}='';
+            Data{13,1}=''; Data{13,2}='';
+            Data{14,1}=''; Data{14,2}='';
+            Data{15,1}=''; Data{15,2}='';
+            app.UITable.Data=Data;
+            
+            
+            app.probe=app.getprobe(fullfile(BrainRecordIRApp.Folders.DefaultData,n{1},n2{1}));
+            app.probe.draw([],[],app.UIAxes);
+
+            
+        end
+
+        % Value changed function: InvestigatorDropDown
+        function InvestigatorDropDownValueChanged(app, event)
+            global BrainRecordIRApp;
+            Inv = app.InvestigatorDropDown.Value;
+            folder=dir(fullfile(BrainRecordIRApp.Folders.DefaultData,Inv));
+            n2={};
+            for i=1:length(folder)
+                if(folder(i).isdir & isempty(strfind(folder(i).name,'.')))
+                    n2{end+1}=folder(i).name;
+                end
+            end
+             app.StudyDropDown.Items=n2;
+            
+            folder=dir(fullfile(BrainRecordIRApp.Folders.DefaultData,Inv,n2{1}));
+            n3={'New Subject'};
+            for i=1:length(folder)
+                if(folder(i).isdir & isempty(strfind(folder(i).name,'.')))
+                    n3{end+1}=folder(i).name;
+                end
+            end
+            app.SubjectDropDown.Items=n3;
+            
+            app.probe=app.getprobe(fullfile(BrainRecordIRApp.Folders.DefaultData,Inv,n2{1}));
+            cla(app.UIAxes);
+            app.probe.draw([],[],app.UIAxes);
+
+        end
+
+        % Value changed function: StudyDropDown
+        function StudyDropDownValueChanged(app, event)
+            global BrainRecordIRApp;
+            Inv = app.InvestigatorDropDown.Value;
+            Study = app.StudyDropDown.Value;
+            
+            folder=dir(fullfile(BrainRecordIRApp.Folders.DefaultData,Inv,Study));
+            n3={'New Subject'};
+            for i=1:length(folder)
+                if(folder(i).isdir & isempty(strfind(folder(i).name,'.')))
+                    n3{end+1}=folder(i).name;
+                end
+            end
+            app.SubjectDropDown.Items=n3;
+            
+            app.probe=app.getprobe(fullfile(BrainRecordIRApp.Folders.DefaultData,Inv,Study));
+            cla(app.UIAxes);
+            app.probe.draw([],[],app.UIAxes);
+
+        end
+
+        % Value changed function: SubjectDropDown
+        function SubjectDropDownValueChanged(app, event)
+            value = app.SubjectDropDown.Value;
+            
+        end
+
+        % Button pushed function: CancelButton
+        function CancelButtonPushed(app, event)
+            
+            % Delete UIFigure when app is deleted
+            delete(app.uifigure)
+        end
+
+        % Button pushed function: OKButton
+        function OKButtonPushed(app, event)
+                       global BrainRecordIRApp;
+            Inv = app.InvestigatorDropDown.Value;
+            Study = app.StudyDropDown.Value;
+            SubjID=app.SubjectDropDown.Value;
+            
+            data=nirs.core.Data();
+            data.probe=app.probe;
+           
+            colsToSortBy = {'source', 'detector', 'type'};
+            [data.probe.link] = sortrows(data.probe.link, colsToSortBy);
+            
+            demoData=app.UITable.Data;
+            data.demographics('investigator')=Inv;
+            data.demographics('study')=Study;
+            data.demographics('subject')=SubjID;
+            
+            for i=1:size(demoData,1)
+                if(~isempty(demoData{i,1}) & ~isempty(demoData{i,2}))
+                    data.demographics(demoData{i,1})=demoData{i,2};
+                end
+            end
+            
+            BrainRecordIRApp.Subject.data=data;
+            BrainRecordIRApp.Subject.defaultdata=data;
+            
+            %set(handles.numstimlabel,'Text','#events=0');
+            
+            types={};
+            utypes=unique(BrainRecordIRApp.Subject.data.probe.link.type);
+            for i=1:length(utypes)
+                types{end+1}=['Raw: ' num2str(utypes(i)) 'nm'];
+            end
+            BrainRecordIRApp.SelectDisplayType.Items=types;
+
+            Update_BrainRecorderAll;
+            ControlEnable(true);  % enable the controls on the App.
+            delete(app.uifigure)
+
+        end
+    end
+
+    % Component initialization
+    methods (Access = private)
+
+        % Create UIFigure and components
+        function createComponents(app)
+
+            % Create uifigure and hide until all components are created
+            app.uifigure = uifigure('Visible', 'off');
+            app.uifigure.Position = [100 100 450 478];
+            app.uifigure.Name = 'Register Subject';
+            app.uifigure.Resize = 'off';
+
+            % Create UIAxes
+            app.UIAxes = uiaxes(app.uifigure);
+            app.UIAxes.Box = 'on';
+            app.UIAxes.XTick = [];
+            app.UIAxes.YTick = [];
+            app.UIAxes.LineWidth = 2;
+            app.UIAxes.Position = [203 283 238 185];
+
+            % Create InvestigatorDropDownLabel
+            app.InvestigatorDropDownLabel = uilabel(app.uifigure);
+            app.InvestigatorDropDownLabel.HorizontalAlignment = 'right';
+            app.InvestigatorDropDownLabel.FontWeight = 'bold';
+            app.InvestigatorDropDownLabel.Position = [10 441 73 22];
+            app.InvestigatorDropDownLabel.Text = 'Investigator';
+
+            % Create InvestigatorDropDown
+            app.InvestigatorDropDown = uidropdown(app.uifigure);
+            app.InvestigatorDropDown.ValueChangedFcn = createCallbackFcn(app, @InvestigatorDropDownValueChanged, true);
+            app.InvestigatorDropDown.FontWeight = 'bold';
+            app.InvestigatorDropDown.Position = [40 420 149 22];
+
+            % Create StudyDropDownLabel
+            app.StudyDropDownLabel = uilabel(app.uifigure);
+            app.StudyDropDownLabel.HorizontalAlignment = 'right';
+            app.StudyDropDownLabel.FontWeight = 'bold';
+            app.StudyDropDownLabel.Position = [10 387 38 22];
+            app.StudyDropDownLabel.Text = 'Study';
+
+            % Create StudyDropDown
+            app.StudyDropDown = uidropdown(app.uifigure);
+            app.StudyDropDown.ValueChangedFcn = createCallbackFcn(app, @StudyDropDownValueChanged, true);
+            app.StudyDropDown.FontWeight = 'bold';
+            app.StudyDropDown.Position = [40 366 149 22];
+
+            % Create SubjectDropDownLabel
+            app.SubjectDropDownLabel = uilabel(app.uifigure);
+            app.SubjectDropDownLabel.HorizontalAlignment = 'right';
+            app.SubjectDropDownLabel.FontWeight = 'bold';
+            app.SubjectDropDownLabel.Position = [10 334 49 22];
+            app.SubjectDropDownLabel.Text = 'Subject';
+
+            % Create SubjectDropDown
+            app.SubjectDropDown = uidropdown(app.uifigure);
+            app.SubjectDropDown.Items = {'New Subject', 'Option 2', 'Option 3', 'Option 4'};
+            app.SubjectDropDown.Editable = 'on';
+            app.SubjectDropDown.ValueChangedFcn = createCallbackFcn(app, @SubjectDropDownValueChanged, true);
+            app.SubjectDropDown.FontWeight = 'bold';
+            app.SubjectDropDown.BackgroundColor = [1 1 1];
+            app.SubjectDropDown.Position = [40 313 149 22];
+            app.SubjectDropDown.Value = 'New Subject';
+
+            % Create UITable
+            app.UITable = uitable(app.uifigure);
+            app.UITable.ColumnName = {'Field'; 'Value'};
+            app.UITable.ColumnWidth = {'auto'};
+            app.UITable.RowName = {};
+            app.UITable.ColumnEditable = true;
+            app.UITable.Position = [10 16 194 258];
+
+            % Create CommentsTextAreaLabel
+            app.CommentsTextAreaLabel = uilabel(app.uifigure);
+            app.CommentsTextAreaLabel.HorizontalAlignment = 'right';
+            app.CommentsTextAreaLabel.Position = [216 254 64 22];
+            app.CommentsTextAreaLabel.Text = 'Comments';
+
+            % Create CommentsTextArea
+            app.CommentsTextArea = uitextarea(app.uifigure);
+            app.CommentsTextArea.Position = [225 60 207 189];
+
+            % Create DemographicsLabel
+            app.DemographicsLabel = uilabel(app.uifigure);
+            app.DemographicsLabel.FontWeight = 'bold';
+            app.DemographicsLabel.Position = [19 275 89 22];
+            app.DemographicsLabel.Text = 'Demographics';
+
+            % Create OKButton
+            app.OKButton = uibutton(app.uifigure, 'push');
+            app.OKButton.ButtonPushedFcn = createCallbackFcn(app, @OKButtonPushed, true);
+            app.OKButton.Position = [332 16 100 22];
+            app.OKButton.Text = 'OK';
+
+            % Create CancelButton
+            app.CancelButton = uibutton(app.uifigure, 'push');
+            app.CancelButton.ButtonPushedFcn = createCallbackFcn(app, @CancelButtonPushed, true);
+            app.CancelButton.Position = [225 16 100 22];
+            app.CancelButton.Text = 'Cancel';
+
+            % Show the figure after all components are created
+            app.uifigure.Visible = 'on';
+        end
+    end
+
+    % App creation and deletion
+    methods (Access = public)
+
+        % Construct app
+        function app = RegisterSubject
+
+            % Create UIFigure and components
+            createComponents(app)
+
+            % Register the app with App Designer
+            registerApp(app, app.uifigure)
+
+            % Execute the startup function
+            runStartupFcn(app, @startupFcn)
+
+            if nargout == 0
+                clear app
+            end
+        end
+
+        % Code that executes before app deletion
+        function delete(app)
+
+            % Delete UIFigure when app is deleted
+            delete(app.uifigure)
+        end
+    end
+end]]></w:t></w:r></w:p></w:body></w:document>

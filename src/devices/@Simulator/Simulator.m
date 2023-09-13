@@ -35,9 +35,13 @@ classdef Simulator < handle
             set(obj.timer,'TimerFcn',@timerfcn);
              
             % Create a TCP/IP client connection
-            obj.tcp_connection = tcpclient("35.186.191.80", 9000);  % Modify this line
+            obj.createTCPDefault();
         end
         
+       function obj=createTCPDefault(obj)
+            obj.tcp_connection = tcpclient("35.186.191.80", 9000);  % Modify this line
+        end
+
          function n= get.info(obj)
             n='Connected: Data Simulator';
         end
@@ -77,8 +81,7 @@ classdef Simulator < handle
            set(obj.timer,'ExecutionMode','fixedRate');
            set(obj.timer,'Period',1/obj.sample_rate);
            set(obj.timer,'TimerFcn',@timerfcn);
-           obj.tcp_connection = tcpclient("35.186.191.80", 9000);  % Modify this line
-
+           obj.createTCPDefault();
            start(obj.timer);
        end
        
@@ -149,7 +152,7 @@ classdef Simulator < handle
 
                     % Attempt to reconnect
                     try
-                        obj.tcp_connection = tcpclient("35.186.191.80", 9000);  % Modify this line
+                        obj.createTCPDefault();
                         disp('Reconnected successfully.');
                     catch ME
                         disp('Failed to reconnect:');
