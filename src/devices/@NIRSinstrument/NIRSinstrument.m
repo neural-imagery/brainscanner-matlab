@@ -1,11 +1,8 @@
 classdef NIRSinstrument
-  
-
-   
    properties(Hidden = true)
         device;
         type;
-        TCPConnection;
+        tcp_connection;
    end
    properties( Dependent = true )
        samples_avaliable;
@@ -68,16 +65,19 @@ classdef NIRSinstrument
 
        function obj=sendOverTCP(obj,json_str)
             try
+                disp("Sending...");
                 disp(num2str(length(json_str)));
                 message = [num2str(length(json_str)) ' ' json_str];
                 write(obj.tcp_connection, message);
+                disp("Sent!");
             catch ME
                 disp('Error occurred while writing data:');
                 disp(ME.message);
                 disp(ME.stack(1));  % Display where the error occurred
-
+                disp(ME.identifier);
+                disp(ME);
                 % Check if the error is due to the server resetting the connection
-                if strcmp(ME.identifier, 'MATLAB:tcpclient:ConnectionReset')
+                if contains(ME.identifier, 'writeFailed') || contains(ME.identifier, 'Reset')
                     disp('Server reset the connection. Attempting to reconnect...');
 
                     % Attempt to reconnect
@@ -92,9 +92,9 @@ classdef NIRSinstrument
             end
         end
 
-       function obj=openTCP(obj,ip,port)
-           obj.TCPConnection=obj.device.openTCP(ip,port);
-       end
+        function obj=openTCP(obj,ip,port)
+            obj.tcp_connection=obj.device.openTCP(ip,port);
+        end
 
        function obj=setLaserState(obj,lIdx,state)
           obj.device=obj.device.setLaserState(lIdx,state);
@@ -124,8 +124,6 @@ classdef NIRSinstrument
        
        function [d,t]=get_samples(obj,nsamples)
             [d,t]=obj.device.get_samples(nsamples);
-           
-           
        end
        
    end

@@ -130,9 +130,35 @@ classdef Simulator < handle
             disp("Done writing");
        end
        
-     
-end
-       
+       function obj=sendOverTCP(obj,json_str)
+            try
+                disp("Sending...");
+                disp(num2str(length(json_str)));
+                message = [num2str(length(json_str)) ' ' json_str];
+                write(obj.tcp_connection, message);
+                disp("Sent!");
+            catch ME
+                disp('Error occurred while writing data:');
+                disp(ME.message);
+                disp(ME.stack(1));  % Display where the error occurred
+                disp(ME.identifier);
+                disp(ME);
+                % Check if the error is due to the server resetting the connection
+                if contains(ME.identifier, 'writeFailed') || contains(ME.identifier, 'Reset')
+                    disp('Server reset the connection. Attempting to reconnect...');
+
+                    % Attempt to reconnect
+                    try
+                        obj.tcp_connection = tcpclient("35.186.191.80", 9000);  % Modify this line
+                        disp('Reconnected successfully.');
+                    catch ME
+                        disp('Failed to reconnect:');
+                        disp(ME.message);
+                    end
+                end
+            end
+        end
+    end
 end
 
 function timerfcn(varargin)
