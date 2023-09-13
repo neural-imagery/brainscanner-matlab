@@ -6,7 +6,7 @@ On M1 Mac, install Matlab 2023b or later (tested to work). On older Macs, ask Cl
 
 ```
 git config fetch.recurseSubmodules on-demand
-git clone https://github.com/huppertt/BrainRecordIR/
+git clone https://github.com/neural-imagery/brainscanner-matlab
 cd BrainRecordIR
 git pull --recurse-submodules
 git submodule init
